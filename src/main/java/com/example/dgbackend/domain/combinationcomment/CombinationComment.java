@@ -1,6 +1,6 @@
-package com.example.dgbackend.domain.combination;
+package com.example.dgbackend.domain.combinationcomment;
 
-
+import com.example.dgbackend.domain.combination.Combination;
 import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.global.common.BaseTimeEntity;
 import jakarta.persistence.Entity;
@@ -21,28 +21,26 @@ import org.hibernate.annotations.ColumnDefault;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Combination extends BaseTimeEntity {
+public class CombinationComment extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
-    private String title;
-
-    @NotNull
     private String content;
 
     @ColumnDefault("0")
-    private Long likeCount;
-
-    @ColumnDefault("0")
-    private Long commentCount;
+    private Long parentId; //댓글 : 0, 대 댓글 : 자신의 부모 댓글 id
 
     private boolean state = true; //true : 존재, false : 삭제
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "combination_id")
+    private Combination combination;
 
 }

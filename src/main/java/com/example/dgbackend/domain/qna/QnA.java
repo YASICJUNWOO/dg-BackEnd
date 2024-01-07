@@ -1,5 +1,4 @@
-package com.example.dgbackend.domain.combination;
-
+package com.example.dgbackend.domain.qna;
 
 import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.global.common.BaseTimeEntity;
@@ -15,13 +14,12 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Combination extends BaseTimeEntity {
+public class QnA extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,13 +31,8 @@ public class Combination extends BaseTimeEntity {
     @NotNull
     private String content;
 
-    @ColumnDefault("0")
-    private Long likeCount;
-
-    @ColumnDefault("0")
-    private Long commentCount;
-
-    private boolean state = true; //true : 존재, false : 삭제
+    @NotNull
+    private boolean isConfirmed; //true : 읽음, false: 안읽음
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")

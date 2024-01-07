@@ -1,6 +1,6 @@
-package com.example.dgbackend.domain.combination;
+package com.example.dgbackend.domain.recipe;
 
-
+import com.example.dgbackend.domain.recipebook.RecipeBook;
 import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.global.common.BaseTimeEntity;
 import jakarta.persistence.Entity;
@@ -15,34 +15,49 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Combination extends BaseTimeEntity {
+public class Recipe extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
-    private String title;
+    private String name;
 
     @NotNull
-    private String content;
+    private String info;
 
-    @ColumnDefault("0")
+    @NotNull
+    private String cookingTime;
+
+    @NotNull
+    private String calorie;
+
+    @NotNull
     private Long likeCount;
 
-    @ColumnDefault("0")
+    @NotNull
     private Long commentCount;
+
+    @NotNull
+    private String ingredient;
+
+    @NotNull
+    private String recipeInstruction;
 
     private boolean state = true; //true : 존재, false : 삭제
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "recipe_book_id")
+    private RecipeBook recipeBook;
 
 }

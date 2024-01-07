@@ -1,7 +1,7 @@
-package com.example.dgbackend.domain.combination;
-
+package com.example.dgbackend.domain.termagree;
 
 import com.example.dgbackend.domain.member.Member;
+import com.example.dgbackend.domain.term.Term;
 import com.example.dgbackend.global.common.BaseTimeEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -10,39 +10,29 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Combination extends BaseTimeEntity {
+public class TermAgree extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    private String title;
-
-    @NotNull
-    private String content;
-
-    @ColumnDefault("0")
-    private Long likeCount;
-
-    @ColumnDefault("0")
-    private Long commentCount;
-
-    private boolean state = true; //true : 존재, false : 삭제
+    private boolean approve = true; //true: 동의, false: 비동의
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "term_id")
+    private Term term;
 
 }
