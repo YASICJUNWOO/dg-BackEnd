@@ -51,7 +51,7 @@ jobs:
 
       # Docker
     - name: 도커 이미지 빌드
-      run: docker build -t minhyeokDev/drinking_gourmet:latest .
+      run: docker build -t minhyeokDev/drinkinggourmet:latest .
 
     - name: Docker - Login to DockerHub
       uses: docker/login-action@v2
@@ -60,7 +60,7 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
         
     - name: Docker Hub 퍼블리시
-      run: docker push minhyeokDev/drinking_gourmet:latest
+      run: docker push minhyeokDev/drinkinggourmet:latest
 
     - name: Depoly in AWS ec2
       uses: appleboy/ssh-action@master
@@ -71,5 +71,5 @@ jobs:
          script: |
            sudo docker stop $(sudo docker ps -a -q) 
            sudo docker rm $(sudo docker ps -a -q) 
-           sudo docker pull minhyeokDev/drinking_gourmet:latest
-           sudo docker run -d -p 8080:8080 --name dg-server minhyeokDev/drinking_gourmet:latest
+           sudo docker pull minhyeokDev/drinkinggourmet:latest
+           sudo docker run -d -p 8080:8080 --name dg-server minhyeokDev/drinkinggourmet:latest
