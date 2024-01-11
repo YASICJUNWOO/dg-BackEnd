@@ -54,10 +54,12 @@ public class Member extends BaseTimeEntity {
 
     private boolean state = true; //true: 존재, false: 탈퇴
 
-    @NotNull
     private Integer drinkingWeeks;
 
-    @NotNull
     private Integer drinkingTimes;
+
+    private String preferredAlcoholDgree; // 선호 도수
+
+    private String limit; //주량
 
 }
