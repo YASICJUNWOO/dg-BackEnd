@@ -1,6 +1,5 @@
 package com.example.dgbackend.domain.recipe;
 
-import com.example.dgbackend.domain.recipebook.RecipeBook;
 import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.global.common.BaseTimeEntity;
 import jakarta.persistence.Entity;
@@ -57,9 +56,5 @@ public class Recipe extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "recipe_book_id")
-    private RecipeBook recipeBook;
 
 }
