@@ -26,7 +26,7 @@ public class Recommend extends BaseTimeEntity {
     private Long id;
 
     @NotNull
-    private String desireLevel;
+    private Integer desireLevel;
 
     @NotNull
     private String foodName;
