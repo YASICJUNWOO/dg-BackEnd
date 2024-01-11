@@ -50,6 +50,8 @@ public class Recipe extends BaseTimeEntity {
     @NotNull
     private String recipeInstruction;
 
+    private String recommendCombination; //추천받은 조합
+
     private boolean state = true; //true : 존재, false : 삭제
 
     @ManyToOne(fetch = FetchType.LAZY)
