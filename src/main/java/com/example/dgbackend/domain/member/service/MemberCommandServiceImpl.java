@@ -1,8 +1,8 @@
 package com.example.dgbackend.domain.member.service;
 
 import com.example.dgbackend.domain.member.Member;
-import com.example.dgbackend.domain.member.dto.MemberRequestDTO;
-import com.example.dgbackend.domain.member.dto.MemberResponseDTO;
+import com.example.dgbackend.domain.member.dto.MemberRequest;
+import com.example.dgbackend.domain.member.dto.MemberResponse;
 import com.example.dgbackend.domain.member.repository.MemberRepository;
 import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
 import com.example.dgbackend.global.exception.ApiException;
@@ -18,7 +18,7 @@ public class MemberCommandServiceImpl implements MemberCommandService{
     @Autowired
     MemberRepository memberRepository;
     @Override
-    public MemberResponseDTO.RecommendInfoDTO patchRecommendInfo(Long memberID, MemberRequestDTO.RecommendInfoDTO requestInfoDTO) {
+    public MemberResponse.RecommendInfoDTO patchRecommendInfo(Long memberID, MemberRequest.RecommendInfoDTO requestInfoDTO) {
         Member member = memberRepository.findById(memberID).orElseThrow(() -> new ApiException(ErrorStatus._EMPTY_MEMBER));
         member.setPreferredAlcoholType(requestInfoDTO.getPreferredAlcoholType());
         member.setPreferredAlcoholDegree(requestInfoDTO.getPreferredAlcoholDegree());
@@ -27,6 +27,6 @@ public class MemberCommandServiceImpl implements MemberCommandService{
 
         memberRepository.save(member);
 
-        return MemberResponseDTO.toRecommendInfoDTO(member);
+        return MemberResponse.toRecommendInfoDTO(member);
     }
 }

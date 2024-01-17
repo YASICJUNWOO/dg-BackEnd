@@ -14,7 +14,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
@@ -61,4 +60,33 @@ public class Member extends BaseTimeEntity {
 
     private String drinkingTimes; // 음주 횟수
 
+
+    //주류 추천 정보 관련 setter
+    /*
+    Setter: preferredAlcoholType (선호 주종)
+     */
+    public void setPreferredAlcoholType(String alcoholType) {
+        this.preferredAlcoholType = alcoholType;
+    }
+
+    /*
+    Setter: preferredAlcoholDegree (선호 도수)
+     */
+    public void setPreferredAlcoholDegree(String alcoholDegree) {
+        this.preferredAlcoholDegree = alcoholDegree;
+    }
+
+    /*
+    Setter: drinkingTimes (음주 횟수)
+     */
+    public void setDrinkingTimes(String drinkingTimes) {
+        this.drinkingTimes = drinkingTimes;
+    }
+
+    /*
+    Setter: drinkingLimit (주량)
+     */
+    public void setDrinkingLimit(String drinkingLimit) {
+        this.drinkingLimit = drinkingLimit;
+    }
 }

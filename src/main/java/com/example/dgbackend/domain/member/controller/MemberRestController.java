@@ -1,7 +1,7 @@
 package com.example.dgbackend.domain.member.controller;
 
-import com.example.dgbackend.domain.member.dto.MemberRequestDTO;
-import com.example.dgbackend.domain.member.dto.MemberResponseDTO;
+import com.example.dgbackend.domain.member.dto.MemberRequest;
+import com.example.dgbackend.domain.member.dto.MemberResponse;
 import com.example.dgbackend.domain.member.service.MemberCommandService;
 import com.example.dgbackend.domain.member.service.MemberQueryService;
 import com.example.dgbackend.global.common.response.ApiResponse;
@@ -9,10 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Member", description = "회원 관련 API")
 @RestController
@@ -27,7 +24,7 @@ public class MemberRestController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "회원 추천 정보 저장 성공"),
     })
     @PatchMapping("/recommend-info")
-    public ApiResponse<MemberResponseDTO.RecommendInfoDTO> patchRecommendInfo(Long memberID, @RequestBody MemberRequestDTO.RecommendInfoDTO recommendInfoDTO){
+    public ApiResponse<MemberResponse.RecommendInfoDTO> patchRecommendInfo(@RequestParam(name = "Member ID") Long memberID, @RequestBody MemberRequest.RecommendInfoDTO recommendInfoDTO){
         // TODO : 소셜로그인 통합시 MemberID를 Token에서 추출
 
         return ApiResponse.onSuccess(memberCommandService.patchRecommendInfo(memberID, recommendInfoDTO));
