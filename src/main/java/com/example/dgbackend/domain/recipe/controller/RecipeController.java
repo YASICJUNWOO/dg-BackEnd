@@ -49,4 +49,10 @@ public class RecipeController {
         return ApiResponse.onSuccess(recipeService.updateRecipe(RecipeParamVO.of(name, member), recipeRequestDto));
     }
 
+    @DeleteMapping
+    public ApiResponse<String> deleteRecipe(@RequestParam String name, @RequestParam String member) {
+        recipeService.deleteRecipe(RecipeParamVO.of(name, member));
+        return ApiResponse.onSuccess("삭제 완료");
+    }
+
 }

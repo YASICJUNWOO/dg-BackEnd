@@ -52,6 +52,12 @@ public class RecipeService {
         return RecipeConverter.toResponse(recipeRepository.save(recipe));
     }
 
+    @Transactional
+    public void deleteRecipe(RecipeParamVO recipeParamVO) {
+        Recipe recipe = getRecipe(recipeParamVO).delete();
+        recipeRepository.save(recipe);
+    }
+
     //레시피 이름과 회원 이름으로 레시피 탐색
     @Transactional
     public Recipe getRecipe(RecipeParamVO recipeParamVO) {
