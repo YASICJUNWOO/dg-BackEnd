@@ -3,20 +3,20 @@ package com.example.dgbackend.domain.recipe.service;
 import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.recipe.Recipe;
 import com.example.dgbackend.domain.recipe.dto.RecipeParamVO;
-import com.example.dgbackend.domain.recipe.dto.RecipeRequestDTO;
-import com.example.dgbackend.domain.recipe.dto.RecipeResponseDTO;
+import com.example.dgbackend.domain.recipe.dto.RecipeRequest;
+import com.example.dgbackend.domain.recipe.dto.RecipeResponse;
 
 import java.util.List;
 
 public interface RecipeService {
 
-    List<RecipeResponseDTO> getExistRecipes();
+    List<RecipeResponse> getExistRecipes();
 
-    RecipeResponseDTO getRecipeDetail(RecipeParamVO recipeParamVO);
+    RecipeResponse getRecipeDetail(RecipeParamVO recipeParamVO);
 
-    RecipeResponseDTO createRecipe(RecipeRequestDTO recipeRequestDto, Member member);
+    RecipeResponse createRecipe(RecipeRequest recipeRequest, Member member);
 
-    RecipeResponseDTO updateRecipe(RecipeParamVO recipeParamVO, RecipeRequestDTO recipeRequestDto);
+    RecipeResponse updateRecipe(RecipeParamVO recipeParamVO, RecipeRequest recipeRequest);
 
     void deleteRecipe(RecipeParamVO recipeParamVO);
 

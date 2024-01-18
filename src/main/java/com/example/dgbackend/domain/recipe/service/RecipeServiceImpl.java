@@ -5,8 +5,8 @@ import com.example.dgbackend.domain.member.service.MemberService;
 import com.example.dgbackend.domain.recipe.Recipe;
 import com.example.dgbackend.domain.recipe.converter.RecipeConverter;
 import com.example.dgbackend.domain.recipe.dto.RecipeParamVO;
-import com.example.dgbackend.domain.recipe.dto.RecipeRequestDTO;
-import com.example.dgbackend.domain.recipe.dto.RecipeResponseDTO;
+import com.example.dgbackend.domain.recipe.dto.RecipeRequest;
+import com.example.dgbackend.domain.recipe.dto.RecipeResponse;
 import com.example.dgbackend.domain.recipe.repository.RecipeRepository;
 import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
 import com.example.dgbackend.global.exception.ApiException;
@@ -26,30 +26,30 @@ public class RecipeServiceImpl implements RecipeService {
     private final MemberService memberService;
 
     @Override
-    public List<RecipeResponseDTO> getExistRecipes() {
+    public List<RecipeResponse> getExistRecipes() {
         return recipeRepository.findAllByState(true).stream()
                 .map(RecipeConverter::toResponse)
                 .toList();
     }
 
     @Override
-    public RecipeResponseDTO getRecipeDetail(RecipeParamVO recipeParamVO) {
+    public RecipeResponse getRecipeDetail(RecipeParamVO recipeParamVO) {
         Recipe recipe = getRecipe(recipeParamVO);
         return RecipeConverter.toResponse(recipe);
     }
 
     @Override
-    public RecipeResponseDTO createRecipe(RecipeRequestDTO recipeRequestDto, Member member) {
+    public RecipeResponse createRecipe(RecipeRequest recipeRequest, Member member) {
 
         Member memberEntity = memberService.findMemberByName(member.getName());
-        isAlreadyCreate(recipeRequestDto.getName(),memberEntity.getName());
-        return RecipeConverter.toResponse(recipeRepository.save(RecipeConverter.toEntity(recipeRequestDto, memberEntity)));
+        isAlreadyCreate(recipeRequest.getName(),memberEntity.getName());
+        return RecipeConverter.toResponse(recipeRepository.save(RecipeConverter.toEntity(recipeRequest, memberEntity)));
     }
 
     @Override
     @Transactional
-    public RecipeResponseDTO updateRecipe(RecipeParamVO recipeParamVO, RecipeRequestDTO recipeRequestDto) {
-        Recipe recipe = getRecipe(recipeParamVO).update(recipeRequestDto);
+    public RecipeResponse updateRecipe(RecipeParamVO recipeParamVO, RecipeRequest recipeRequest) {
+        Recipe recipe = getRecipe(recipeParamVO).update(recipeRequest);
         isAlreadyCreate(recipe.getName(),recipe.getMember().getName());
         return RecipeConverter.toResponse(recipeRepository.save(recipe));
     }

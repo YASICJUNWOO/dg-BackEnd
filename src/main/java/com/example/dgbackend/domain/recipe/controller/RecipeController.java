@@ -5,8 +5,8 @@ import com.example.dgbackend.domain.enums.SocialType;
 import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.member.repository.MemberRepository;
 import com.example.dgbackend.domain.recipe.dto.RecipeParamVO;
-import com.example.dgbackend.domain.recipe.dto.RecipeRequestDTO;
-import com.example.dgbackend.domain.recipe.dto.RecipeResponseDTO;
+import com.example.dgbackend.domain.recipe.dto.RecipeRequest;
+import com.example.dgbackend.domain.recipe.dto.RecipeResponse;
 import com.example.dgbackend.domain.recipe.service.RecipeServiceImpl;
 import com.example.dgbackend.global.common.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
@@ -30,23 +30,23 @@ public class RecipeController {
             .build();
 
     @GetMapping
-    public ApiResponse<List<RecipeResponseDTO>> getRecipes() {
+    public ApiResponse<List<RecipeResponse>> getRecipes() {
         return ApiResponse.onSuccess(recipeServiceImpl.getExistRecipes());
     }
 
     @GetMapping("/detail")
-    public ApiResponse<RecipeResponseDTO> getRecipe(@RequestParam String name, @RequestParam String member) {
+    public ApiResponse<RecipeResponse> getRecipe(@RequestParam String name, @RequestParam String member) {
         return ApiResponse.onSuccess(recipeServiceImpl.getRecipeDetail(RecipeParamVO.of(name, member)));
     }
 
     @PostMapping
-    public ApiResponse<RecipeResponseDTO> createRecipe(@RequestBody RecipeRequestDTO recipeRequestDto) {
-        return ApiResponse.onSuccess(recipeServiceImpl.createRecipe(recipeRequestDto, member));
+    public ApiResponse<RecipeResponse> createRecipe(@RequestBody RecipeRequest recipeRequest) {
+        return ApiResponse.onSuccess(recipeServiceImpl.createRecipe(recipeRequest, member));
     }
 
     @PatchMapping
-    public ApiResponse<RecipeResponseDTO> updateRecipe(@RequestParam String name, @RequestParam String member, @RequestBody RecipeRequestDTO recipeRequestDto) {
-        return ApiResponse.onSuccess(recipeServiceImpl.updateRecipe(RecipeParamVO.of(name, member), recipeRequestDto));
+    public ApiResponse<RecipeResponse> updateRecipe(@RequestParam String name, @RequestParam String member, @RequestBody RecipeRequest recipeRequest) {
+        return ApiResponse.onSuccess(recipeServiceImpl.updateRecipe(RecipeParamVO.of(name, member), recipeRequest));
     }
 
     @DeleteMapping

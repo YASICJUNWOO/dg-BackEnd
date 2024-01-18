@@ -1,6 +1,5 @@
 package com.example.dgbackend.domain.recipe.dto;
 
-import com.example.dgbackend.domain.member.Member;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RecipeResponseDTO {
+public class RecipeResponse {
 
     @NotNull
     private String name;

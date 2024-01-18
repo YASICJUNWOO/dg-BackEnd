@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RecipeRequestDTO {
+public class RecipeRequest {
 
     @NotNull
     private String name;
