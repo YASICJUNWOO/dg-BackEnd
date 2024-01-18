@@ -7,7 +7,7 @@ import com.example.dgbackend.domain.member.repository.MemberRepository;
 import com.example.dgbackend.domain.recipe.dto.RecipeParamVO;
 import com.example.dgbackend.domain.recipe.dto.RecipeRequestDTO;
 import com.example.dgbackend.domain.recipe.dto.RecipeResponseDTO;
-import com.example.dgbackend.domain.recipe.service.RecipeService;
+import com.example.dgbackend.domain.recipe.service.RecipeServiceImpl;
 import com.example.dgbackend.global.common.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RecipeController {
 
-    private final RecipeService recipeService;
+    private final RecipeServiceImpl recipeServiceImpl;
 
     //Default Member 생성
     //TODO: @AutenticationPrincipal로 변경
@@ -31,27 +31,27 @@ public class RecipeController {
 
     @GetMapping
     public ApiResponse<List<RecipeResponseDTO>> getRecipes() {
-        return ApiResponse.onSuccess(recipeService.getExistRecipes());
+        return ApiResponse.onSuccess(recipeServiceImpl.getExistRecipes());
     }
 
     @GetMapping("/detail")
     public ApiResponse<RecipeResponseDTO> getRecipe(@RequestParam String name, @RequestParam String member) {
-        return ApiResponse.onSuccess(recipeService.getRecipeDetail(RecipeParamVO.of(name, member)));
+        return ApiResponse.onSuccess(recipeServiceImpl.getRecipeDetail(RecipeParamVO.of(name, member)));
     }
 
     @PostMapping
     public ApiResponse<RecipeResponseDTO> createRecipe(@RequestBody RecipeRequestDTO recipeRequestDto) {
-        return ApiResponse.onSuccess(recipeService.createRecipe(recipeRequestDto, member));
+        return ApiResponse.onSuccess(recipeServiceImpl.createRecipe(recipeRequestDto, member));
     }
 
     @PatchMapping
     public ApiResponse<RecipeResponseDTO> updateRecipe(@RequestParam String name, @RequestParam String member, @RequestBody RecipeRequestDTO recipeRequestDto) {
-        return ApiResponse.onSuccess(recipeService.updateRecipe(RecipeParamVO.of(name, member), recipeRequestDto));
+        return ApiResponse.onSuccess(recipeServiceImpl.updateRecipe(RecipeParamVO.of(name, member), recipeRequestDto));
     }
 
     @DeleteMapping
     public ApiResponse<String> deleteRecipe(@RequestParam String name, @RequestParam String member) {
-        recipeService.deleteRecipe(RecipeParamVO.of(name, member));
+        recipeServiceImpl.deleteRecipe(RecipeParamVO.of(name, member));
         return ApiResponse.onSuccess("삭제 완료");
     }
 
