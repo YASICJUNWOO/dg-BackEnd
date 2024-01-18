@@ -3,7 +3,6 @@ package com.example.dgbackend.domain.recipe.service;
 import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.member.service.MemberService;
 import com.example.dgbackend.domain.recipe.Recipe;
-import com.example.dgbackend.domain.recipe.converter.RecipeConverter;
 import com.example.dgbackend.domain.recipe.dto.RecipeParamVO;
 import com.example.dgbackend.domain.recipe.dto.RecipeRequest;
 import com.example.dgbackend.domain.recipe.dto.RecipeResponse;
@@ -28,14 +27,14 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public List<RecipeResponse> getExistRecipes() {
         return recipeRepository.findAllByState(true).stream()
-                .map(RecipeConverter::toResponse)
+                .map(RecipeResponse::toResponse)
                 .toList();
     }
 
     @Override
     public RecipeResponse getRecipeDetail(RecipeParamVO recipeParamVO) {
         Recipe recipe = getRecipe(recipeParamVO);
-        return RecipeConverter.toResponse(recipe);
+        return RecipeResponse.toResponse(recipe);
     }
 
     @Override
@@ -43,7 +42,7 @@ public class RecipeServiceImpl implements RecipeService {
 
         Member memberEntity = memberService.findMemberByName(member.getName());
         isAlreadyCreate(recipeRequest.getName(),memberEntity.getName());
-        return RecipeConverter.toResponse(recipeRepository.save(RecipeConverter.toEntity(recipeRequest, memberEntity)));
+        return RecipeResponse.toResponse(recipeRepository.save(RecipeRequest.toEntity(recipeRequest, memberEntity)));
     }
 
     @Override
@@ -51,7 +50,7 @@ public class RecipeServiceImpl implements RecipeService {
     public RecipeResponse updateRecipe(RecipeParamVO recipeParamVO, RecipeRequest recipeRequest) {
         Recipe recipe = getRecipe(recipeParamVO).update(recipeRequest);
         isAlreadyCreate(recipe.getName(),recipe.getMember().getName());
-        return RecipeConverter.toResponse(recipeRepository.save(recipe));
+        return RecipeResponse.toResponse(recipeRepository.save(recipe));
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.example.dgbackend.domain.recipe.dto;
 
+import com.example.dgbackend.domain.recipe.Recipe;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -41,5 +42,21 @@ public class RecipeResponse {
     private boolean state = true; //true : 존재, false : 삭제
 
     private String memberName;
+
+    public static RecipeResponse toResponse(Recipe recipe) {
+        return RecipeResponse.builder()
+                .name(recipe.getName())
+                .info(recipe.getInfo())
+                .cookingTime(recipe.getCookingTime())
+                .calorie(recipe.getCalorie())
+                .likeCount(recipe.getLikeCount())
+                .commentCount(recipe.getCommentCount())
+                .ingredient(recipe.getIngredient())
+                .recipeInstruction(recipe.getRecipeInstruction())
+                .recommendCombination(recipe.getRecommendCombination())
+                .state(recipe.isState())
+                .memberName(recipe.getMember().getName())
+                .build();
+    }
 
 }
