@@ -49,6 +49,7 @@ public class RecipeService {
     @Transactional
     public RecipeResponseDTO updateRecipe(RecipeParamVO recipeParamVO, RecipeRequestDTO recipeRequestDto) {
         Recipe recipe = getRecipe(recipeParamVO).update(recipeRequestDto);
+        isAlreadyCreate(recipe.getName(),recipe.getMember().getName());
         return RecipeConverter.toResponse(recipeRepository.save(recipe));
     }
 
