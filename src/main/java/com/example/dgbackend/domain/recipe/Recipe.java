@@ -1,6 +1,7 @@
 package com.example.dgbackend.domain.recipe;
 
 import com.example.dgbackend.domain.member.Member;
+import com.example.dgbackend.domain.recipe.dto.RecipeRequestDTO;
 import com.example.dgbackend.global.common.BaseTimeEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -50,4 +51,14 @@ public class Recipe extends BaseTimeEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    public Recipe update(RecipeRequestDTO recipeResponseDto) {
+        this.name = recipeResponseDto.getName();
+        this.info = recipeResponseDto.getInfo();
+        this.cookingTime = recipeResponseDto.getCookingTime();
+        this.calorie = recipeResponseDto.getCalorie();
+        this.ingredient = recipeResponseDto.getIngredient();
+        this.recipeInstruction = recipeResponseDto.getRecipeInstruction();
+        this.recommendCombination = recipeResponseDto.getRecommendCombination();
+        return this;
+    }
 }
