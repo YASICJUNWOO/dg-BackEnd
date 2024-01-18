@@ -8,5 +8,5 @@ import java.util.Optional;
 
 public interface RecipeRepository extends JpaRepository<Recipe, Long> {
     List<Recipe> findAllByState(boolean state);
-    Optional<Recipe> findByNameAndMember_Name(String name, String memberName);
+    List<Recipe> findAllByNameAndMember_Name(String name, String memberName);
 }

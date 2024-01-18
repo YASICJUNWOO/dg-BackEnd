@@ -79,7 +79,9 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     public void isAlreadyCreate(String RecipeName, String memberName) {
-        recipeRepository.findByNameAndMember_Name(RecipeName, memberName)
+        recipeRepository.findAllByNameAndMember_Name(RecipeName, memberName).stream()
+                .filter(Recipe::isState)
+                .findFirst()
                 .ifPresent(recipe -> {
                     throw new ApiException(ErrorStatus._ALREADY_CREATE_RECIPE);
                 });
