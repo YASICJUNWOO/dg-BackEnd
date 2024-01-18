@@ -61,4 +61,10 @@ public class Recipe extends BaseTimeEntity {
         this.recommendCombination = recipeResponseDto.getRecommendCombination();
         return this;
     }
+
+    public Recipe delete() {
+        this.state = false;
+        return this;
+    }
+
 }
