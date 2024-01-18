@@ -4,7 +4,6 @@ import com.example.dgbackend.domain.enums.Gender;
 import com.example.dgbackend.domain.enums.SocialType;
 import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.member.repository.MemberRepository;
-import com.example.dgbackend.domain.recipe.dto.RecipeParamVO;
 import com.example.dgbackend.domain.recipe.dto.RecipeRequest;
 import com.example.dgbackend.domain.recipe.dto.RecipeResponse;
 import com.example.dgbackend.domain.recipe.service.RecipeServiceImpl;
@@ -34,9 +33,9 @@ public class RecipeController {
         return ApiResponse.onSuccess(recipeServiceImpl.getExistRecipes());
     }
 
-    @GetMapping("/detail")
-    public ApiResponse<RecipeResponse> getRecipe(@RequestParam String name, @RequestParam String member) {
-        return ApiResponse.onSuccess(recipeServiceImpl.getRecipeDetail(RecipeParamVO.of(name, member)));
+    @GetMapping("/{recipeId}")
+    public ApiResponse<RecipeResponse> getRecipe(@PathVariable Long recipeId) {
+        return ApiResponse.onSuccess(recipeServiceImpl.getRecipeDetail(recipeId));
     }
 
     @PostMapping
@@ -44,14 +43,14 @@ public class RecipeController {
         return ApiResponse.onSuccess(recipeServiceImpl.createRecipe(recipeRequest, member));
     }
 
-    @PatchMapping
-    public ApiResponse<RecipeResponse> updateRecipe(@RequestParam String name, @RequestParam String member, @RequestBody RecipeRequest recipeRequest) {
-        return ApiResponse.onSuccess(recipeServiceImpl.updateRecipe(RecipeParamVO.of(name, member), recipeRequest));
+    @PatchMapping("/{recipeId}")
+    public ApiResponse<RecipeResponse> updateRecipe(@PathVariable Long recipeId, @RequestBody RecipeRequest recipeRequest) {
+        return ApiResponse.onSuccess(recipeServiceImpl.updateRecipe(recipeId, recipeRequest));
     }
 
-    @DeleteMapping
-    public ApiResponse<String> deleteRecipe(@RequestParam String name, @RequestParam String member) {
-        recipeServiceImpl.deleteRecipe(RecipeParamVO.of(name, member));
+    @DeleteMapping("/{recipeId}")
+    public ApiResponse<String> deleteRecipe(@PathVariable Long recipeId) {
+        recipeServiceImpl.deleteRecipe(recipeId);
         return ApiResponse.onSuccess("삭제 완료");
     }
 

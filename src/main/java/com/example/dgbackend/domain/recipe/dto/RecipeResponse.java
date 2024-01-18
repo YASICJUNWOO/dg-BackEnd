@@ -14,6 +14,9 @@ import lombok.NoArgsConstructor;
 public class RecipeResponse {
 
     @NotNull
+    private Long id;
+
+    @NotNull
     private String name;
 
     @NotNull
@@ -45,6 +48,7 @@ public class RecipeResponse {
 
     public static RecipeResponse toResponse(Recipe recipe) {
         return RecipeResponse.builder()
+                .id(recipe.getId())
                 .name(recipe.getName())
                 .info(recipe.getInfo())
                 .cookingTime(recipe.getCookingTime())

@@ -3,7 +3,6 @@ package com.example.dgbackend.domain.recipe.service;
 import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.member.service.MemberService;
 import com.example.dgbackend.domain.recipe.Recipe;
-import com.example.dgbackend.domain.recipe.dto.RecipeParamVO;
 import com.example.dgbackend.domain.recipe.dto.RecipeRequest;
 import com.example.dgbackend.domain.recipe.dto.RecipeResponse;
 import com.example.dgbackend.domain.recipe.repository.RecipeRepository;
@@ -32,8 +31,8 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public RecipeResponse getRecipeDetail(RecipeParamVO recipeParamVO) {
-        Recipe recipe = getRecipe(recipeParamVO);
+    public RecipeResponse getRecipeDetail(Long id) {
+        Recipe recipe = getRecipe(id);
         return RecipeResponse.toResponse(recipe);
     }
 
@@ -47,24 +46,24 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     @Transactional
-    public RecipeResponse updateRecipe(RecipeParamVO recipeParamVO, RecipeRequest recipeRequest) {
-        Recipe recipe = getRecipe(recipeParamVO).update(recipeRequest);
-        isAlreadyCreate(recipe.getName(),recipe.getMember().getName());
+    public RecipeResponse updateRecipe(Long id, RecipeRequest recipeRequest) {
+        Recipe recipe = getRecipe(id).update(recipeRequest);
+        isAlreadyCreate(recipeRequest.getName(), recipe.getMember().getName());
         return RecipeResponse.toResponse(recipeRepository.save(recipe));
     }
 
     @Override
     @Transactional
-    public void deleteRecipe(RecipeParamVO recipeParamVO) {
-        Recipe recipe = getRecipe(recipeParamVO).delete();
+    public void deleteRecipe(Long id) {
+        Recipe recipe = getRecipe(id).delete();
         recipeRepository.save(recipe);
     }
 
     //레시피 이름과 회원 이름으로 레시피 탐색
     @Override
-    public Recipe getRecipe(RecipeParamVO recipeParamVO) {
+    public Recipe getRecipe(Long id) {
 
-        Recipe recipe = recipeRepository.findByNameAndMember_Name(recipeParamVO.getName(), recipeParamVO.getMemberName())
+        Recipe recipe = recipeRepository.findById(id)
                 .orElseThrow(() -> new ApiException(ErrorStatus._EMPTY_RECIPE));
 
         return isDelete(recipe);
