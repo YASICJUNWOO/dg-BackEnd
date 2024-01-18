@@ -33,4 +33,9 @@ public class RecipeLikeController {
         return ApiResponse.onSuccess(recipeLikeServiceImpl.getRecipeLike(RecipeLikeVO.of(recipeId, DefaultMember.getName())));
     }
 
+    @PostMapping("/{recipeId}")
+    public ApiResponse<RecipeLikeResponse> createRecipeLike(@PathVariable Long recipeId) {
+        return ApiResponse.onSuccess(recipeLikeServiceImpl.changeRecipeLike(RecipeLikeVO.of(recipeId, DefaultMember.getName())));
+    }
+
 }
