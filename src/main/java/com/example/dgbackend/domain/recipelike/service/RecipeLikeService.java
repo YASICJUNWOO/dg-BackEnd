@@ -10,6 +10,10 @@ public interface RecipeLikeService {
 
     RecipeLikeResponse getRecipeLike(RecipeLikeVO recipeLikeVO);
 
+    RecipeLikeResponse changeRecipeLike(RecipeLikeVO recipeLikeVO);
+
+    RecipeLike createRecipe(RecipeLikeVO recipeLikeVO);
+
     Optional<RecipeLike> getRecipeLikeEntity(RecipeLikeVO recipeLikeVO);
 
 }

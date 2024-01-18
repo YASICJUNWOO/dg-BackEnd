@@ -5,9 +5,12 @@ import com.example.dgbackend.domain.member.service.MemberService;
 import com.example.dgbackend.domain.recipe.Recipe;
 import com.example.dgbackend.domain.recipe.service.RecipeServiceImpl;
 import com.example.dgbackend.domain.recipelike.RecipeLike;
+import com.example.dgbackend.domain.recipelike.dto.RecipeLikeRequest;
 import com.example.dgbackend.domain.recipelike.dto.RecipeLikeResponse;
 import com.example.dgbackend.domain.recipelike.dto.RecipeLikeVO;
 import com.example.dgbackend.domain.recipelike.repository.RecipeLikeRepository;
+import com.example.dgbackend.global.exception.ApiException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +34,27 @@ public class RecipeLikeServiceImpl implements RecipeLikeService {
         return recipeLike.map(RecipeLikeResponse::toResponseByEntity)
                 .orElseGet(() -> RecipeLikeResponse.toResponseByState(false));
     }
+
+    @Override
+    @Transactional
+    public RecipeLikeResponse changeRecipeLike(RecipeLikeVO recipeLikeVO) {
+
+        Optional<RecipeLike> recipeLike = getRecipeLikeEntity(recipeLikeVO);
+
+        //있으면 변경, 없으면 만들어서 저장
+        RecipeLike savedRecipeLike = recipeLike.map(RecipeLike::changeState)
+                .orElseGet(() -> createRecipe(recipeLikeVO));
+
+        return RecipeLikeResponse.toResponseByEntity(savedRecipeLike);
+    }
+
+    @Override
+    public RecipeLike createRecipe(RecipeLikeVO recipeLikeVO) {
+        Recipe recipe = recipeServiceImpl.getRecipe(recipeLikeVO.getRecipeId());
+        Member member = memberService.findMemberByName(recipeLikeVO.getMemberName());
+        return recipeLikeRepository.save(RecipeLikeRequest.toEntity(recipe, member));
+    }
+
 
     //레시피 id와 멤버 이름으로 레시피 좋아요 엔티티를 조회
     @Override
