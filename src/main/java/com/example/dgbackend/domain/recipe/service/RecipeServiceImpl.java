@@ -40,23 +40,22 @@ public class RecipeServiceImpl implements RecipeService {
     public RecipeResponse createRecipe(RecipeRequest recipeRequest, Member member) {
 
         Member memberEntity = memberService.findMemberByName(member.getName());
-        isAlreadyCreate(recipeRequest.getName(),memberEntity.getName());
+        isAlreadyCreate(recipeRequest.getName(), memberEntity.getName());
         return RecipeResponse.toResponse(recipeRepository.save(RecipeRequest.toEntity(recipeRequest, memberEntity)));
     }
 
     @Override
     @Transactional
     public RecipeResponse updateRecipe(Long id, RecipeRequest recipeRequest) {
-        Recipe recipe = getRecipe(id).update(recipeRequest);
+        Recipe recipe = getRecipe(id);
         isAlreadyCreate(recipeRequest.getName(), recipe.getMember().getName());
-        return RecipeResponse.toResponse(recipeRepository.save(recipe));
+        return RecipeResponse.toResponse(recipe.update(recipeRequest));
     }
 
     @Override
     @Transactional
     public void deleteRecipe(Long id) {
-        Recipe recipe = getRecipe(id).delete();
-        recipeRepository.save(recipe);
+        getRecipe(id).delete();
     }
 
     //레시피 이름과 회원 이름으로 레시피 탐색
