@@ -42,8 +42,14 @@ public class RecipeService {
     public RecipeResponseDTO createRecipe(RecipeRequestDTO recipeRequestDto, Member member) {
 
         Member memberEntity = memberService.findMemberByName(member.getName());
-        isAlreadyCreate(recipeRequestDto.getName(), memberEntity.getName());
+        isAlreadyCreate(recipeRequestDto.getName(),memberEntity.getName());
         return RecipeConverter.toResponse(recipeRepository.save(RecipeConverter.toEntity(recipeRequestDto, memberEntity)));
+    }
+
+    @Transactional
+    public RecipeResponseDTO updateRecipe(RecipeParamVO recipeParamVO, RecipeRequestDTO recipeRequestDto) {
+        Recipe recipe = getRecipe(recipeParamVO).update(recipeRequestDto);
+        return RecipeConverter.toResponse(recipeRepository.save(recipe));
     }
 
     //레시피 이름과 회원 이름으로 레시피 탐색

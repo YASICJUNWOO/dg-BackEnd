@@ -44,4 +44,9 @@ public class RecipeController {
         return ApiResponse.onSuccess(recipeService.createRecipe(recipeRequestDto, member));
     }
 
+    @PatchMapping
+    public ApiResponse<RecipeResponseDTO> updateRecipe(@RequestParam String name, @RequestParam String member, @RequestBody RecipeRequestDTO recipeRequestDto) {
+        return ApiResponse.onSuccess(recipeService.updateRecipe(RecipeParamVO.of(name, member), recipeRequestDto));
+    }
+
 }
