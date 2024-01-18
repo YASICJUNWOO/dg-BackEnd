@@ -53,4 +53,12 @@ public class RecipeService {
         return recipe;
     }
 
+    @Transactional
+    public void isAlreadyCreate(String RecipeName, String memberName) {
+        recipeRepository.findByNameAndMember_Name(RecipeName, memberName)
+                .ifPresent(recipe -> {
+                    throw new ApiException(ErrorStatus._ALREADY_CREATE_RECIPE);
+                });
+    }
+
 }
