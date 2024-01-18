@@ -1,8 +1,11 @@
 package com.example.dgbackend.domain.recipe.service;
 
+import com.example.dgbackend.domain.member.Member;
+import com.example.dgbackend.domain.member.service.MemberService;
 import com.example.dgbackend.domain.recipe.Recipe;
 import com.example.dgbackend.domain.recipe.converter.RecipeConverter;
 import com.example.dgbackend.domain.recipe.dto.RecipeParamVO;
+import com.example.dgbackend.domain.recipe.dto.RecipeRequestDTO;
 import com.example.dgbackend.domain.recipe.dto.RecipeResponseDTO;
 import com.example.dgbackend.domain.recipe.repository.RecipeRepository;
 import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
@@ -20,6 +23,7 @@ import java.util.List;
 public class RecipeService {
 
     private final RecipeRepository recipeRepository;
+    private final MemberService memberService;
 
     @Transactional
     public List<RecipeResponseDTO> getExistRecipes() {
@@ -32,6 +36,14 @@ public class RecipeService {
     public RecipeResponseDTO getRecipeDetail(RecipeParamVO recipeParamVO) {
         Recipe recipe = getRecipe(recipeParamVO);
         return RecipeConverter.toResponse(recipe);
+    }
+
+    @Transactional
+    public RecipeResponseDTO createRecipe(RecipeRequestDTO recipeRequestDto, Member member) {
+
+        Member memberEntity = memberService.findMemberByName(member.getName());
+        isAlreadyCreate(recipeRequestDto.getName(), memberEntity.getName());
+        return RecipeConverter.toResponse(recipeRepository.save(RecipeConverter.toEntity(recipeRequestDto, memberEntity)));
     }
 
     //레시피 이름과 회원 이름으로 레시피 탐색

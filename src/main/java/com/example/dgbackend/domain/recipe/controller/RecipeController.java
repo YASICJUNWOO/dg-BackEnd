@@ -3,7 +3,7 @@ package com.example.dgbackend.domain.recipe.controller;
 import com.example.dgbackend.domain.enums.Gender;
 import com.example.dgbackend.domain.enums.SocialType;
 import com.example.dgbackend.domain.member.Member;
-import com.example.dgbackend.domain.member.MemberRepository;
+import com.example.dgbackend.domain.member.repository.MemberRepository;
 import com.example.dgbackend.domain.recipe.dto.RecipeParamVO;
 import com.example.dgbackend.domain.recipe.dto.RecipeRequestDTO;
 import com.example.dgbackend.domain.recipe.dto.RecipeResponseDTO;
@@ -21,6 +21,14 @@ public class RecipeController {
 
     private final RecipeService recipeService;
 
+    //Default Member 생성
+    //TODO: @AutenticationPrincipal로 변경
+    private final MemberRepository memberRepository;
+    private Member member = Member.builder()
+            .name("김동규").email("email@email.com").birthDate("birthDate")
+            .phoneNumber("phoneNumber").nickName("nickName").gender(Gender.MALE).socialType(SocialType.APPLE)
+            .build();
+
     @GetMapping
     public ApiResponse<List<RecipeResponseDTO>> getRecipes() {
         return ApiResponse.onSuccess(recipeService.getExistRecipes());
@@ -29,6 +37,11 @@ public class RecipeController {
     @GetMapping("/detail")
     public ApiResponse<RecipeResponseDTO> getRecipe(@RequestParam String name, @RequestParam String member) {
         return ApiResponse.onSuccess(recipeService.getRecipeDetail(RecipeParamVO.of(name, member)));
+    }
+
+    @PostMapping
+    public ApiResponse<RecipeResponseDTO> createRecipe(@RequestBody RecipeRequestDTO recipeRequestDto) {
+        return ApiResponse.onSuccess(recipeService.createRecipe(recipeRequestDto, member));
     }
 
 }
