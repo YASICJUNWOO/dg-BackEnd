@@ -11,16 +11,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@Builder
 public class RecipeComment extends BaseTimeEntity {
 
     @Id
@@ -33,6 +31,7 @@ public class RecipeComment extends BaseTimeEntity {
     @ColumnDefault("0")
     private Long parentId; //댓글 : 0, 대 댓글 : 자신의 부모 댓글 id
 
+    @Builder.Default
     private boolean state = true; //true : 존재, false : 삭제
 
     @ManyToOne(fetch = FetchType.LAZY)
