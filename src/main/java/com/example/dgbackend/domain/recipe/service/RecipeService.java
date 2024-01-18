@@ -1,8 +1,11 @@
 package com.example.dgbackend.domain.recipe.service;
 
+import com.example.dgbackend.domain.recipe.Recipe;
 import com.example.dgbackend.domain.recipe.converter.RecipeConverter;
 import com.example.dgbackend.domain.recipe.dto.RecipeResponseDTO;
 import com.example.dgbackend.domain.recipe.repository.RecipeRepository;
+import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
+import com.example.dgbackend.global.exception.ApiException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +25,15 @@ public class RecipeService {
         return recipeRepository.findAllByState(true).stream()
                 .map(RecipeConverter::toResponse)
                 .toList();
+    }
+
+    //레시피가 삭제된 경우 예외처리
+    @Transactional
+    public Recipe isDelete(Recipe recipe) {
+
+        if (!recipe.isState()) throw new ApiException(ErrorStatus._DELETE_RECIPE);
+
+        return recipe;
     }
 
 }
