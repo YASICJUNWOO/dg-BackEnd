@@ -6,10 +6,12 @@ import com.example.dgbackend.domain.recipe.Recipe;
 import com.example.dgbackend.domain.recipe.service.RecipeService;
 import com.example.dgbackend.domain.recipecomment.RecipeComment;
 import com.example.dgbackend.domain.recipecomment.dto.RecipeCommentRequest;
+import com.example.dgbackend.domain.recipecomment.dto.RecipeCommentResponse;
 import com.example.dgbackend.domain.recipecomment.dto.RecipeCommentVO;
 import com.example.dgbackend.domain.recipecomment.repository.RecipeCommentRepository;
 import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
 import com.example.dgbackend.global.exception.ApiException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,12 @@ public class RecipeCommentServiceImpl implements RecipeCommentService {
     private final RecipeCommentRepository recipeCommentRepository;
     private final MemberService memberService;
     private final RecipeService recipeService;
+
+    @Override
+    @Transactional
+    public RecipeCommentResponse saveRecipeComment(RecipeCommentVO paramVO) {
+        return RecipeCommentResponse.toResponse(recipeCommentRepository.save(getEntity(paramVO)));
+    }
 
     @Override
     public RecipeComment getEntity(RecipeCommentVO paramVO) {
