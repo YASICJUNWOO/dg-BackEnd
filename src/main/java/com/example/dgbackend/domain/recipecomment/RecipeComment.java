@@ -41,4 +41,10 @@ public class RecipeComment extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "parentComment")
     private List<RecipeComment> childCommentList = new ArrayList<>();
+
+    public RecipeComment update(String content) {
+        this.content = content;
+        return this;
+    }
+
 }
