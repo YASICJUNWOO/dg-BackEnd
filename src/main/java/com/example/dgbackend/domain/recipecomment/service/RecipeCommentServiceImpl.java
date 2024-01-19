@@ -28,7 +28,10 @@ public class RecipeCommentServiceImpl implements RecipeCommentService{
 
     @Override
     public List<RecipeCommentResponse> getRecipeComment(Long recipeId) {
-        return recipeCommentRepository.findAllByRecipeId(recipeId).stream()
+
+        Recipe recipe = recipeService.getRecipe(recipeId);
+
+        return recipeCommentRepository.findAllByRecipe(recipe).stream()
                 .filter(recipeComment -> recipeComment.getParentComment() == null)
                 .map(RecipeCommentResponse::toResponse)
                 .toList();
