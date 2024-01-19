@@ -45,4 +45,9 @@ public class RecipeCommentController {
         return ApiResponse.onSuccess(recipeCommentService.updateRecipeComment(recipeCommentRequest));
     }
 
+    @DeleteMapping("/{recipeId}")
+    public ApiResponse<RecipeCommentResponse> deleteRecipeComment(@PathVariable Long recipeId) {
+        return ApiResponse.onSuccess(recipeCommentService.deleteRecipeComment(recipeId));
+    }
+
 }

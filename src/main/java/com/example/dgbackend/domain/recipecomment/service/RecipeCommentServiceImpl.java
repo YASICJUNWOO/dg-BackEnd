@@ -81,4 +81,14 @@ public class RecipeCommentServiceImpl implements RecipeCommentService{
         return RecipeCommentResponse.toResponse(recipeComment);
     }
 
+    @Override
+    @Transactional
+    public RecipeCommentResponse deleteRecipeComment(Long recipeCommentId) {
+        RecipeComment recipeComment = getEntityById(recipeCommentId).delete();
+
+        //대댓글도 삭제
+        recipeComment.getChildCommentList().forEach(RecipeComment::delete);
+        return RecipeCommentResponse.toResponse(recipeComment);
+    }
+
 }
