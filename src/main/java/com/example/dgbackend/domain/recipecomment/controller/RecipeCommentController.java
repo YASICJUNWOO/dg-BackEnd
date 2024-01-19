@@ -12,6 +12,8 @@ import com.example.dgbackend.global.common.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/recipe-comments")
@@ -26,6 +28,11 @@ public class RecipeCommentController {
             .name("김동규").email("email@email.com").birthDate("birthDate")
             .phoneNumber("phoneNumber").nickName("nickName").gender(Gender.MALE).socialType(SocialType.APPLE)
             .build();
+
+    @GetMapping("/{recipeId}")
+    public ApiResponse<List<RecipeCommentResponse>> getRecipeComments(@PathVariable Long recipeId) {
+        return ApiResponse.onSuccess(recipeCommentService.getRecipeComment(recipeId));
+    }
 
     @PostMapping("/{recipeId}")
     public ApiResponse<RecipeCommentResponse> saveRecipeComment(@PathVariable Long recipeId, @RequestBody RecipeCommentRequest.Post recipeCommentRequest) {
