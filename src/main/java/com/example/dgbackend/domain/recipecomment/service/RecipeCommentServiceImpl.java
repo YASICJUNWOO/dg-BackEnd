@@ -32,6 +32,7 @@ public class RecipeCommentServiceImpl implements RecipeCommentService{
         Recipe recipe = recipeService.getRecipe(recipeId);
 
         return recipeCommentRepository.findAllByRecipe(recipe).stream()
+                .filter(RecipeComment::isState)
                 .filter(recipeComment -> recipeComment.getParentComment() == null)
                 .map(RecipeCommentResponse::toResponse)
                 .toList();
