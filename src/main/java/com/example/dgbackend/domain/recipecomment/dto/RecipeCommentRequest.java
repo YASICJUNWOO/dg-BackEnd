@@ -36,4 +36,18 @@ public class RecipeCommentRequest {
 
     }
 
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @RequiredArgsConstructor
+    public static class Patch {
+
+        @NotNull
+        private String content;
+
+        @NotNull
+        private Long recipeCommentId;
+
+    }
+
 }
