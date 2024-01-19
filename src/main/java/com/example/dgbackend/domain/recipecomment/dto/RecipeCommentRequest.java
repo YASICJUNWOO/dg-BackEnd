@@ -12,6 +12,16 @@ import lombok.RequiredArgsConstructor;
 
 public class RecipeCommentRequest {
 
+    public static RecipeComment toEntity(Member member, Recipe recipe, String comment, RecipeComment parentComment) {
+        return RecipeComment.builder()
+                .content(comment)
+                .state(true)
+                .member(member)
+                .parentComment(parentComment)
+                .recipe(recipe)
+                .build();
+    }
+
     @Getter
     @Builder
     @AllArgsConstructor
