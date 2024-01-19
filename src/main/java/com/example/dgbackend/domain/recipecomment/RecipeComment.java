@@ -1,18 +1,14 @@
 package com.example.dgbackend.domain.recipecomment;
 
-import com.example.dgbackend.domain.recipe.Recipe;
 import com.example.dgbackend.domain.member.Member;
+import com.example.dgbackend.domain.recipe.Recipe;
 import com.example.dgbackend.global.common.BaseTimeEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @AllArgsConstructor
@@ -28,8 +24,9 @@ public class RecipeComment extends BaseTimeEntity {
     @NotNull
     private String content;
 
-    @ColumnDefault("0")
-    private Long parentId; //댓글 : 0, 대 댓글 : 자신의 부모 댓글 id
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_id")
+    private RecipeComment parentComment; //댓글 : 0, 대 댓글 : 자신의 부모 댓글 id
 
     @Builder.Default
     private boolean state = true; //true : 존재, false : 삭제
@@ -42,4 +39,6 @@ public class RecipeComment extends BaseTimeEntity {
     @JoinColumn(name = "recipe_id")
     private Recipe recipe;
 
+    @OneToMany(mappedBy = "parentComment")
+    private List<RecipeComment> childCommentList = new ArrayList<>();
 }
