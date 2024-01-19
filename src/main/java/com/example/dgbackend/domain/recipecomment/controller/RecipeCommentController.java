@@ -40,14 +40,14 @@ public class RecipeCommentController {
         return ApiResponse.onSuccess(recipeCommentService.saveRecipeComment(paramVO));
     }
 
-    @PatchMapping("/{recipeId}")
-    public ApiResponse<RecipeCommentResponse> updateRecipeComment(@PathVariable Long recipeId, @RequestBody RecipeCommentRequest.Patch recipeCommentRequest) {
+    @PatchMapping
+    public ApiResponse<RecipeCommentResponse> updateRecipeComment(@RequestBody RecipeCommentRequest.Patch recipeCommentRequest) {
         return ApiResponse.onSuccess(recipeCommentService.updateRecipeComment(recipeCommentRequest));
     }
 
-    @DeleteMapping("/{recipeId}")
-    public ApiResponse<RecipeCommentResponse> deleteRecipeComment(@PathVariable Long recipeId) {
-        return ApiResponse.onSuccess(recipeCommentService.deleteRecipeComment(recipeId));
+    @DeleteMapping
+    public ApiResponse<RecipeCommentResponse> deleteRecipeComment(@RequestParam Long recipeCommentId) {
+        return ApiResponse.onSuccess(recipeCommentService.deleteRecipeComment(recipeCommentId));
     }
 
 }
