@@ -19,4 +19,6 @@ public interface RecipeCommentService {
 
     RecipeComment getEntityById(Long id);
 
+    RecipeCommentResponse updateRecipeComment(RecipeCommentRequest.Patch requestDTO);
+
 }

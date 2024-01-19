@@ -74,4 +74,11 @@ public class RecipeCommentServiceImpl implements RecipeCommentService{
                 .orElseThrow(() -> new ApiException(ErrorStatus._EMPTY_RECIPE_COMMENT));
     }
 
+    @Override
+    @Transactional
+    public RecipeCommentResponse updateRecipeComment(RecipeCommentRequest.Patch requestDTO) {
+        RecipeComment recipeComment = getEntityById(requestDTO.getRecipeCommentId()).update(requestDTO.getContent());
+        return RecipeCommentResponse.toResponse(recipeComment);
+    }
+
 }
