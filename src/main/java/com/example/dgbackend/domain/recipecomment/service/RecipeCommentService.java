@@ -8,6 +8,9 @@ import com.example.dgbackend.domain.recipecomment.dto.RecipeCommentVO;
 import java.util.List;
 
 public interface RecipeCommentService {
+
+    List<RecipeCommentResponse> getRecipeComment(Long recipeId);
+
     RecipeCommentResponse saveRecipeComment(RecipeCommentVO paramVO);
 
     RecipeComment getEntity(RecipeCommentVO paramVO);
