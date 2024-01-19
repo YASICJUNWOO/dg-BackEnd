@@ -40,4 +40,9 @@ public class RecipeCommentController {
         return ApiResponse.onSuccess(recipeCommentService.saveRecipeComment(paramVO));
     }
 
+    @PatchMapping("/{recipeId}")
+    public ApiResponse<RecipeCommentResponse> updateRecipeComment(@PathVariable Long recipeId, @RequestBody RecipeCommentRequest.Patch recipeCommentRequest) {
+        return ApiResponse.onSuccess(recipeCommentService.updateRecipeComment(recipeCommentRequest));
+    }
+
 }
