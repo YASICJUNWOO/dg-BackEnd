@@ -1,7 +1,6 @@
 package com.example.dgbackend.domain.combination.controller;
 
 import com.example.dgbackend.domain.combination.dto.CombinationResponse;
-import com.example.dgbackend.domain.combination.service.CombinationQueryService;
 import com.example.dgbackend.global.common.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -18,7 +17,7 @@ public class CombinationController {
 
     private final CombinationQueryService combinationQueryService;
 
-    @Operation(summary = "오늘의 조합 목록 조회", description = "오늘의 조합 목록을 조회합니다.")
+    @Operation(summary = "오늘의 조합 홈 조회", description = "오늘의 조합 목록을 조회합니다.")
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "오늘의 조합 목록 조회 성공")
     })
@@ -37,6 +36,7 @@ public class CombinationController {
     public ApiResponse<CombinationResponse.CombinationDetailDTO> getDetailCombination(@PathVariable(name = "combinationId") Long combinationId) {
         return ApiResponse.onSuccess(combinationQueryService.getCombinationDetailDTO(combinationId));
     }
+
 
     @Operation(summary = "오늘의 조합 수정정보 조회", description = "특정 오늘의 조합의 수정할 정보를 조회합니다.")
     @ApiResponses(value = {
