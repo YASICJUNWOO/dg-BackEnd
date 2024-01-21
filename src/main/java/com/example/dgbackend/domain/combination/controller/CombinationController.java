@@ -11,10 +11,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
 
 @Tag(name = "오늘의 조합 API")
 @RestController
@@ -31,8 +29,8 @@ public class CombinationController {
     })
     @Parameter(name = "page", description = "오늘의 조합 목록 페이지 번호, query string 입니다.")
     @GetMapping("")
-    public ApiResponse<CombinationResponse.CombinationPreviewDTOList> getCombinations(@RequestParam(name = "page") Integer page) {
-        return ApiResponse.onSuccess(combinationQueryService.getCombinationPreviewDTOList(page));
+    public ApiResponse<CombinationResponse.CombinationPreviewResultList> getCombinations(@RequestParam(name = "page") Integer page) {
+        return ApiResponse.onSuccess(combinationQueryService.getCombinationPreviewResultList(page));
     }
 
     @Operation(summary = "오늘의 조합 상세정보 조회", description = "특정 오늘의 조합 정보를 조회합니다.")
@@ -41,8 +39,8 @@ public class CombinationController {
     })
     @Parameter(name = "combinationId", description = "오늘의 조합 Id, Path Variable 입니다.")
     @GetMapping("/{combinationId}")
-    public ApiResponse<CombinationResponse.CombinationDetailDTO> getDetailCombination(@PathVariable(name = "combinationId") Long combinationId) {
-        return ApiResponse.onSuccess(combinationQueryService.getCombinationDetailDTO(combinationId));
+    public ApiResponse<CombinationResponse.CombinationDetailResult> getDetailCombination(@PathVariable(name = "combinationId") Long combinationId) {
+        return ApiResponse.onSuccess(combinationQueryService.getCombinationDetailResult(combinationId));
     }
 
     @Operation(summary = "오늘의 조합 작성", description = "오늘의 조합 작성합니다.")
@@ -52,10 +50,9 @@ public class CombinationController {
     @Parameter(name = "recommendId", description = "내가 받은 추천 조합 Id, Path Variable 입니다.")
     @PostMapping("/recommends/{recommendId}")
     public ApiResponse<CombinationResponse.CombinationProcResult> writeCombination(@PathVariable(name = "recommendId") Long recommendId,
-                                                                                   @RequestPart(name = "writeCombination") CombinationRequest.WriteCombination request,
-                                                                                   @RequestPart(name = "imageUrls", required = false) List<MultipartFile> multipartFiles) throws IOException {
+                                                                                   @RequestPart(name = "writeCombination") CombinationRequest.WriteCombination request) throws IOException {
         // TODO: HttpServletRequest 사용해서 Authorization token으로 사용자 정보 받아오기
-        return ApiResponse.onSuccess(combinationCommandService.uploadCombination(recommendId, request, multipartFiles));
+        return ApiResponse.onSuccess(combinationCommandService.uploadCombination(recommendId, request));
 
     }
 
@@ -66,8 +63,8 @@ public class CombinationController {
     })
     @Parameter(name = "combinationId", description = "오늘의 조합 Id, Path Variable 입니다.")
     @GetMapping("/{combinationId}/edit")
-    public ApiResponse<CombinationResponse.CombinationEditDTO> editCombination(@PathVariable(name = "combinationId") Long combinationId) {
-        return ApiResponse.onSuccess(combinationQueryService.getCombinationEditDTO(combinationId));
+    public ApiResponse<CombinationResponse.CombinationEditResult> editCombination(@PathVariable(name = "combinationId") Long combinationId) {
+        return ApiResponse.onSuccess(combinationQueryService.getCombinationEditResult(combinationId));
     }
 
     @Operation(summary = "오늘의 조합 수정", description = "특정 오늘의 조합을 수정합니다.")

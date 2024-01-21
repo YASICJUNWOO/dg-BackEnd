@@ -15,7 +15,7 @@ import java.util.Optional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class HashTagCommandServiceImpl implements HashTagCommandService{
+public class HashTagCommandServiceImpl implements HashTagCommandService {
 
     private final HashTagRepository hashTagRepository;
     private final HashTagOptionRepository hashTagOptionRepository;

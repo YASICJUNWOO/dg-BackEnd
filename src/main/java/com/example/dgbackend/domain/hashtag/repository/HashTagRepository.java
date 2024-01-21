@@ -8,5 +8,4 @@ import java.util.Optional;
 public interface HashTagRepository extends JpaRepository<HashTag, Long> {
 
     Optional<HashTag> findByName(String name);
-    boolean existsByName(String name);
 }

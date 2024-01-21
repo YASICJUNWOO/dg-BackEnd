@@ -47,7 +47,7 @@ public class CombinationResponse {
 
     // Page<Combination> -> Page<CombinationPreviewDTO> 로 변환
     public static CombinationPreviewResultList toCombinationPreviewResultList(Page<Combination> combinations,
-                                                                        List<List<HashTagOption>> hashTagOptions) {
+                                                                              List<List<HashTagOption>> hashTagOptions) {
 
         List<CombinationPreviewResult> combinationPreviewDTOS = combinations.getContent()
                 .stream()
@@ -66,7 +66,7 @@ public class CombinationResponse {
 
     // Combination -> CombinationPreviewDTO로 변환
     public static CombinationPreviewResult toCombinationPreviewResult(Combination combination,
-                                                                List<List<HashTagOption>> hashTagOptions) {
+                                                                      List<List<HashTagOption>> hashTagOptions) {
         // TODO: 대표 이지미 정하기
         String imageUrl = combination.getCombinationImages()
                 .stream()
@@ -105,8 +105,8 @@ public class CombinationResponse {
     }
 
     public static CombinationDetailResult toCombinationDetailResult(CombinationResult combinationResult,
-                                                              MemberResponse.MemberResult memberResult,
-                                                              CombinationCommentResponse.CombinationCommentResult combinationCommentResult) {
+                                                                    MemberResponse.MemberResult memberResult,
+                                                                    CombinationCommentResponse.CombinationCommentResult combinationCommentResult) {
         return CombinationDetailResult.builder()
                 .combinationResult(combinationResult)
                 .memberResult(memberResult)
@@ -154,8 +154,8 @@ public class CombinationResponse {
     }
 
     public static CombinationEditResult toCombinationEditResult(Combination combination,
-                                                          List<HashTagOption> hashTagOptions,
-                                                          List<CombinationImage> combinationImages) {
+                                                                List<HashTagOption> hashTagOptions,
+                                                                List<CombinationImage> combinationImages) {
 
         List<String> hashTagList = hashTagOptions.stream()
                 .map(hto -> hto.getHashTag().getName())

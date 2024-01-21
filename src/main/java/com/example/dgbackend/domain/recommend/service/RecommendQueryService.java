@@ -1,8 +1,6 @@
 package com.example.dgbackend.domain.recommend.service;
 
-import com.example.dgbackend.domain.recommend.dto.RecommendResponse;
-
-import static com.example.dgbackend.domain.recommend.dto.RecommendResponse.*;
+import static com.example.dgbackend.domain.recommend.dto.RecommendResponse.RecommendResult;
 
 public interface RecommendQueryService {
 

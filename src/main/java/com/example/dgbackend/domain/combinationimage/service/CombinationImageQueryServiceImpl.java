@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class CombinationImageQueryServiceImpl implements CombinationImageQueryService{
+public class CombinationImageQueryServiceImpl implements CombinationImageQueryService {
 
     private final CombinationImageRepository combinationImageRepository;
 

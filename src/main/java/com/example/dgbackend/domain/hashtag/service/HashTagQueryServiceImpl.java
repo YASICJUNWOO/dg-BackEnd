@@ -11,7 +11,7 @@ import java.util.Optional;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class HashTagQueryServiceImpl implements HashTagQueryService{
+public class HashTagQueryServiceImpl implements HashTagQueryService {
 
     private final HashTagRepository hashTagRepository;
 

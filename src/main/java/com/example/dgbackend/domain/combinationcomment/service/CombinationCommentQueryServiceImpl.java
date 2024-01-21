@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class CombinationCommentQueryServiceImpl implements CombinationCommentQueryService{
+public class CombinationCommentQueryServiceImpl implements CombinationCommentQueryService {
 
     private final CombinationCommentRepository combinationCommentRepository;
 

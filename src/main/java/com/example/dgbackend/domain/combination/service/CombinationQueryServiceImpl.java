@@ -3,7 +3,7 @@ package com.example.dgbackend.domain.combination.service;
 import com.example.dgbackend.domain.combination.Combination;
 import com.example.dgbackend.domain.combination.dto.CombinationResponse;
 import com.example.dgbackend.domain.combination.repository.CombinationRepository;
-import com.example.dgbackend.domain.combinationcomment.domain.CombinationComment;
+import com.example.dgbackend.domain.combinationcomment.CombinationComment;
 import com.example.dgbackend.domain.combinationcomment.dto.CombinationCommentResponse;
 import com.example.dgbackend.domain.combinationcomment.service.CombinationCommentQueryService;
 import com.example.dgbackend.domain.combinationimage.CombinationImage;
@@ -28,7 +28,7 @@ import static com.example.dgbackend.domain.member.dto.MemberResponse.toMemberRes
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class CombinationQueryServiceImpl implements CombinationQueryService{
+public class CombinationQueryServiceImpl implements CombinationQueryService {
 
     private final CombinationRepository combinationRepository;
     private final HashTagOptionRepository hashTagOptionRepository;

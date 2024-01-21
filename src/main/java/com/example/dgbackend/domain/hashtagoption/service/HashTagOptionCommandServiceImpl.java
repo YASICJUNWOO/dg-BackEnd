@@ -48,14 +48,9 @@ public class HashTagOptionCommandServiceImpl implements HashTagOptionCommandServ
                 .filter(name -> !requestHashTagNames.contains(name))
                 .toList();
 
-        // 지워진 HashTag를 조회
-        List<Optional<HashTag>> optionalHasTags = delNameToHashTagOption.stream()
-                .map(hashTagQueryService::findHashTagByName)
-                .toList();
-
-        // 조회한 HashTag를 HashTagOption에서 삭제
-        for (Optional<HashTag> optionalHashTag : optionalHasTags) {
-            optionalHashTag.ifPresent(hashTagOptionRepository::deleteByHashTag);
+        for (String delHashName : delNameToHashTagOption) {
+            HashTagOption findHashTagOption = hashTagOptionRepository.findByCombinationAndHashTagName(combination, delHashName);
+            hashTagOptionRepository.deleteById(findHashTagOption.getId());
         }
     }
 

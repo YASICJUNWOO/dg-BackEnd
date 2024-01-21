@@ -26,6 +26,10 @@ public class MemberResponse {
                 .build();
     }
 
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
     public static class RecommendInfoDTO {
         // 주류 추천 정보 입력 DTO
         private String preferredAlcoholType;  //선호 주종

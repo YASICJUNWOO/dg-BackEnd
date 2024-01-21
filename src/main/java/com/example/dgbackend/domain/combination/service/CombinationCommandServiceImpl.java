@@ -15,11 +15,9 @@ import com.example.dgbackend.domain.recommend.repository.RecommendRepository;
 import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
 import com.example.dgbackend.global.exception.ApiException;
 import com.example.dgbackend.global.s3.S3Service;
-import com.example.dgbackend.global.s3.dto.S3Result;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +25,7 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class CombinationCommandServiceImpl implements CombinationCommandService{
+public class CombinationCommandServiceImpl implements CombinationCommandService {
 
     private final CombinationRepository combinationRepository;
     private final RecommendRepository recommendRepository;
@@ -42,16 +40,16 @@ public class CombinationCommandServiceImpl implements CombinationCommandService{
      * 오늘의 조합 작성
      */
     @Override
-    public CombinationResponse.CombinationProcResult uploadCombination(Long recommendId, CombinationRequest.WriteCombination request,
-                                                 List<MultipartFile> multipartFiles) {
+    public CombinationResponse.CombinationProcResult uploadCombination(Long recommendId, CombinationRequest.WriteCombination request) {
 
         // TODO : Member 매핑 & JWT 를 통해 파싱
 
         // Combination & CombinationImage
         Combination newCombination;
+        List<String> combinationImageList = request.getCombinationImageList();
 
         // 업로드 이미지가 없는 경우, GPT가 추천해준 이미지 사용
-        if (multipartFiles == null) {
+        if (combinationImageList == null || combinationImageList.isEmpty()) {
             Recommend recommend = recommendRepository.findById(recommendId).orElseThrow(
                     () -> new ApiException(ErrorStatus._RECOMMEND_NOT_FOUND)
             );
@@ -59,16 +57,9 @@ public class CombinationCommandServiceImpl implements CombinationCommandService{
 
             newCombination = createCombination(request.getTitle(), request.getContent(), recommendImageUrl);
         } else {
-            List<S3Result> s3Results = s3Service.uploadFile(multipartFiles);
-
-            List<String> imageUrls = s3Results.stream()
-                    .map(S3Result::getImgUrl)
-                    .toList();
-
             newCombination = createCombination(request.getTitle(), request.getContent()
-                    , imageUrls.toArray(String[]::new));
+                    , combinationImageList.toArray(String[]::new));
         }
-
         Combination saveCombination = combinationRepository.save(newCombination);
         hashTagCommandService.uploadHashTag(saveCombination, request.getHashTagNameList());
 
