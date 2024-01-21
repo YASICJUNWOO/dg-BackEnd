@@ -28,4 +28,13 @@ public class CombinationController {
         return ApiResponse.onSuccess(combinationQueryService.getCombinationPreviewDTOList(page));
     }
 
+    @Operation(summary = "오늘의 조합 상세정보 조회", description = "특정 오늘의 조합 정보를 조회합니다.")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "오늘의 조합 상세정보 조회 성공")
+    })
+    @Parameter(name = "combinationId", description = "오늘의 조합 Id, Path Variable 입니다.")
+    @GetMapping("/{combinationId}")
+    public ApiResponse<CombinationResponse.CombinationDetailDTO> getDetailCombination(@PathVariable(name = "combinationId") Long combinationId) {
+        return ApiResponse.onSuccess(combinationQueryService.getCombinationDetailDTO(combinationId));
+    }
 }

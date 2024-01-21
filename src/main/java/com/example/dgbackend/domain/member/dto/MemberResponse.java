@@ -7,10 +7,25 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 public class MemberResponse {
+
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
+    public static class MemberResult {
+        Long memberId;
+        String name;
+        String profileImageUrl;
+    }
+
+    public static MemberResult toMemberResult(Member member) {
+        return MemberResult.builder()
+                .memberId(member.getId())
+                .name(member.getName())
+                .profileImageUrl(member.getProfileImageUrl())
+                .build();
+    }
+
     public static class RecommendInfoDTO {
         // 주류 추천 정보 입력 DTO
         private String preferredAlcoholType;  //선호 주종

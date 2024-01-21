@@ -1,4 +1,4 @@
-package com.example.dgbackend.domain.combination.domain;
+package com.example.dgbackend.domain.combination;
 
 
 import com.example.dgbackend.domain.combinationimage.CombinationImage;

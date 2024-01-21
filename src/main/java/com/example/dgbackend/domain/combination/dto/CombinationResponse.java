@@ -1,6 +1,10 @@
 package com.example.dgbackend.domain.combination.dto;
 
 import com.example.dgbackend.domain.combination.domain.Combination;
+import com.example.dgbackend.domain.combinationcomment.domain.CombinationComment;
+import com.example.dgbackend.domain.combinationcomment.dto.CombinationCommentResponse;
+import com.example.dgbackend.domain.combinationimage.CombinationImage;
+import com.example.dgbackend.domain.member.dto.MemberResponse;
 import com.example.dgbackend.domain.combinationimage.CombinationImage;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,18 +16,9 @@ import java.util.List;
 
 public class CombinationResponse {
 
-    @Builder
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Getter
-    public static class CombinationPreviewDTO {
-        private String title;
-        private String info;
-        private String combinationImageUrl;
-        private Long likeCount;
-        private Long commentCount;
-    }
-
+    /**
+     * 오늘의 조합 홈 페이지 DTO
+     */
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
@@ -35,6 +30,17 @@ public class CombinationResponse {
         Long totalElements;
         Boolean isFirst;
         Boolean isLast;
+    }
+
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    public static class CombinationPreviewDTO {
+        String title;
+        String combinationImageUrl;
+        Long likeCount;
+        Long commentCount;
     }
 
     // Page<Combination> -> Page<CombinationPreviewDTO> 로 변환
@@ -65,10 +71,52 @@ public class CombinationResponse {
 
         return CombinationPreviewDTO.builder()
                 .title(combination.getTitle())
-                .info(combination.getInfo())
                 .combinationImageUrl(imageUrl)
                 .likeCount(combination.getLikeCount())
                 .commentCount(combination.getCommentCount())
                 .build();
     }
+
+    /**
+     * 오늘의 조합 상세 정보 DTO
+     */
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    public static class CombinationDetailDTO {
+        CombinationResult combinationResult;
+        MemberResponse.MemberResult memberResult;
+        CombinationCommentResponse.CombinationCommentResult combinationCommentResult;
+    }
+
+    public static CombinationDetailDTO toCombinationDetailDTO(CombinationResult combinationResult,
+                                                              MemberResponse.MemberResult memberResult,
+                                                              CombinationCommentResponse.CombinationCommentResult combinationCommentResult) {
+        return CombinationDetailDTO.builder()
+                .combinationResult(combinationResult)
+                .memberResult(memberResult)
+                .combinationCommentResult(combinationCommentResult)
+                .build();
+    }
+
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    public static class CombinationResult {
+        Long combinationId;
+        String title;
+        String info;
+        String content;
+    }
+
+    public static CombinationResult toCombinationResult(Combination combination) {
+        return CombinationResult.builder()
+                .combinationId(combination.getId())
+                .title(combination.getTitle())
+                .content(combination.getContent())
+                .build();
+    }
+
 }
