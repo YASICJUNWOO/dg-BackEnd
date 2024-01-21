@@ -1,13 +1,10 @@
 package com.example.dgbackend.domain.combination.dto;
 
-import com.example.dgbackend.domain.combination.domain.Combination;
-import com.example.dgbackend.domain.combinationcomment.domain.CombinationComment;
-import com.example.dgbackend.domain.combinationimage.domain.CombinationImage;
-import com.example.dgbackend.domain.hashtagoption.HashTagOption;
-import com.example.dgbackend.domain.member.Member;
+import com.example.dgbackend.domain.combination.Combination;
+import com.example.dgbackend.domain.combinationcomment.dto.CombinationCommentResponse;
 import com.example.dgbackend.domain.combinationimage.CombinationImage;
 import com.example.dgbackend.domain.hashtagoption.HashTagOption;
-import com.example.dgbackend.domain.member.domain.Member;
+import com.example.dgbackend.domain.member.dto.MemberResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -103,13 +100,13 @@ public class CombinationResponse {
     @Getter
     public static class CombinationDetailDTO {
         CombinationResult combinationResult;
-        MemberResult memberResult;
-        CombinationCommentResult combinationCommentResult;
+        MemberResponse.MemberResult memberResult;
+        CombinationCommentResponse.CombinationCommentResult combinationCommentResult;
     }
 
     public static CombinationDetailDTO toCombinationDetailDTO(CombinationResult combinationResult,
-                                                              MemberResult memberResult,
-                                                              CombinationCommentResult combinationCommentResult) {
+                                                              MemberResponse.MemberResult memberResult,
+                                                              CombinationCommentResponse.CombinationCommentResult combinationCommentResult) {
         return CombinationDetailDTO.builder()
                 .combinationResult(combinationResult)
                 .memberResult(memberResult)
@@ -189,9 +186,9 @@ public class CombinationResponse {
         LocalDateTime createdAt;
     }
 
-    public static CombinationProcResult toCombinationProcResult(Combination combination) {
+    public static CombinationProcResult toCombinationProcResult(Long combinationId) {
         return CombinationProcResult.builder()
-                .combinationId(combination.getId())
+                .combinationId(combinationId)
                 .createdAt(LocalDateTime.now())
                 .build();
     }

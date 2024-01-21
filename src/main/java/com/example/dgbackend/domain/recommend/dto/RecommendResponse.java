@@ -1,6 +1,6 @@
 package com.example.dgbackend.domain.recommend.dto;
 
-import com.example.dgbackend.domain.recommend.domain.Recommend;
+import com.example.dgbackend.domain.recommend.Recommend;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

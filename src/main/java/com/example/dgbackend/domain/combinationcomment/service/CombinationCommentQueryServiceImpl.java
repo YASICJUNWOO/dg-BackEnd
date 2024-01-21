@@ -1,7 +1,7 @@
 package com.example.dgbackend.domain.combinationcomment.service;
 
-import com.example.dgbackend.domain.combination.domain.Combination;
-import com.example.dgbackend.domain.combinationcomment.domain.CombinationComment;
+import com.example.dgbackend.domain.combination.Combination;
+import com.example.dgbackend.domain.combinationcomment.CombinationComment;
 import com.example.dgbackend.domain.combinationcomment.repository.CombinationCommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

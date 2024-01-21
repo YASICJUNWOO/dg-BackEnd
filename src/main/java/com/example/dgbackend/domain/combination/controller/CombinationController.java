@@ -16,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 
-
 @Tag(name = "오늘의 조합 API")
 @RestController
 @RequestMapping("/combinations")
@@ -55,6 +54,7 @@ public class CombinationController {
     public ApiResponse<CombinationResponse.CombinationProcResult> writeCombination(@PathVariable(name = "recommendId") Long recommendId,
                                                                                    @RequestPart(name = "writeCombination") CombinationRequest.WriteCombination request,
                                                                                    @RequestPart(name = "imageUrls", required = false) List<MultipartFile> multipartFiles) throws IOException {
+        // TODO: HttpServletRequest 사용해서 Authorization token으로 사용자 정보 받아오기
         return ApiResponse.onSuccess(combinationCommandService.uploadCombination(recommendId, request, multipartFiles));
 
     }
@@ -70,4 +70,14 @@ public class CombinationController {
         return ApiResponse.onSuccess(combinationQueryService.getCombinationEditDTO(combinationId));
     }
 
+    @Operation(summary = "오늘의 조합 삭제", description = "특정 오늘의 조합을 삭제합니다.")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "오늘의 조합 삭제 성공")
+    })
+    @Parameter(name = "combinationId", description = "오늘의 조합 Id, Path Variable 입니다.")
+    @DeleteMapping("/{combinationId}")
+    public ApiResponse<CombinationResponse.CombinationProcResult> deleteCombination(@PathVariable(name = "combinationId") Long combinationId) {
+
+        return ApiResponse.onSuccess(combinationCommandService.deleteCombination(combinationId));
+    }
 }

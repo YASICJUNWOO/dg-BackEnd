@@ -1,13 +1,15 @@
 package com.example.dgbackend.domain.combination.service;
 
-import com.example.dgbackend.domain.combination.domain.Combination;
+import com.example.dgbackend.domain.combination.Combination;
 import com.example.dgbackend.domain.combination.dto.CombinationRequest;
 import com.example.dgbackend.domain.combination.dto.CombinationResponse;
 import com.example.dgbackend.domain.combination.repository.CombinationRepository;
-import com.example.dgbackend.domain.combinationimage.domain.CombinationImage;
-import com.example.dgbackend.domain.combinationimage.repository.CombinationImageRepository;
+import com.example.dgbackend.domain.combinationimage.CombinationImage;
+import com.example.dgbackend.domain.combinationimage.service.CombinationImageQueryService;
+import com.example.dgbackend.domain.combinationlike.service.CombinationLikeCommandService;
 import com.example.dgbackend.domain.hashtag.service.HashTagCommandService;
-import com.example.dgbackend.domain.recommend.domain.Recommend;
+import com.example.dgbackend.domain.hashtagoption.service.HashTagOptionCommandService;
+import com.example.dgbackend.domain.recommend.Recommend;
 import com.example.dgbackend.domain.recommend.repository.RecommendRepository;
 import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
 import com.example.dgbackend.global.exception.ApiException;
@@ -27,10 +29,12 @@ import java.util.List;
 public class CombinationCommandServiceImpl implements CombinationCommandService{
 
     private final CombinationRepository combinationRepository;
-    private final CombinationImageRepository combinationImageRepository;
     private final RecommendRepository recommendRepository;
     private final S3Service s3Service;
     private final HashTagCommandService hashTagCommandService;
+    private final HashTagOptionCommandService hashTagOptionCommandService;
+    private final CombinationLikeCommandService combinationLikeCommandService;
+    private final CombinationImageQueryService combinationImageQueryService;
 
     @Override
     public CombinationResponse.CombinationProcResult uploadCombination(Long recommendId, CombinationRequest.WriteCombination request,
@@ -63,7 +67,7 @@ public class CombinationCommandServiceImpl implements CombinationCommandService{
         Combination saveCombination = combinationRepository.save(newCombination);
         hashTagCommandService.uploadHashTag(saveCombination, request.getHashTagNameList());
 
-        return CombinationResponse.toCombinationProcResult(saveCombination);
+        return CombinationResponse.toCombinationProcResult(saveCombination.getId());
     }
 
     private Combination createCombination(String title, String content, String... imageUrls) {
@@ -81,5 +85,29 @@ public class CombinationCommandServiceImpl implements CombinationCommandService{
         }
         return combination;
     }
+
+    @Override
+    public CombinationResponse.CombinationProcResult deleteCombination(Long combinationId) {
+
+        // HashTagOption 삭제
+        hashTagOptionCommandService.deleteHashTagOption(combinationId);
+
+        // CombinationLike 삭제
+        combinationLikeCommandService.deleteCombinationLike(combinationId);
+
+        // S3에 해당 Combination 이미지 삭제
+        List<String> imageUrls = combinationImageQueryService.getCombinationImageUrl(combinationId);
+        deleteS3Image(imageUrls);
+
+        // combination 삭제 - 양방향 매핑 CombinationImage, CombinationComment 함께 삭제
+        combinationRepository.deleteById(combinationId);
+        return CombinationResponse.toCombinationProcResult(combinationId);
+    }
+
+    // S3와 같이 저장된 CombinationImage 삭제
+    private void deleteS3Image(List<String> imageUrls) {
+        imageUrls.forEach(s3Service::deleteFile);
+    }
+
 
 }

@@ -1,6 +1,7 @@
 package com.example.dgbackend.domain.combination;
 
 
+import com.example.dgbackend.domain.combinationcomment.CombinationComment;
 import com.example.dgbackend.domain.combinationimage.CombinationImage;
 import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.global.common.BaseTimeEntity;
@@ -39,6 +40,7 @@ public class Combination extends BaseTimeEntity {
     @ColumnDefault("0")
     private Long commentCount;
 
+    @Builder.Default
     private boolean state = true; //true : 존재, false : 삭제
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -48,11 +50,20 @@ public class Combination extends BaseTimeEntity {
     @OneToMany(mappedBy = "combination", cascade = CascadeType.ALL)
     private List<CombinationImage> combinationImages = new ArrayList<>();
 
+    @OneToMany(mappedBy = "combination", cascade = CascadeType.ALL)
+    private List<CombinationComment> combinationComments = new ArrayList<>();
+
+
     /**
      * 연관관계 편의 메소드
      */
     public void addCombinationImage(CombinationImage combinationImage) {
         combinationImages.add(combinationImage);
         combinationImage.setCombination(this);
+    }
+
+    public void addCombinationComment(CombinationComment combinationComment) {
+        combinationComments.add(combinationComment);
+        combinationComment.setCombination(this);
     }
 }

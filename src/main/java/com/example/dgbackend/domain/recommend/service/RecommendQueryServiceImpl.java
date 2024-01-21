@@ -1,6 +1,6 @@
 package com.example.dgbackend.domain.recommend.service;
 
-import com.example.dgbackend.domain.recommend.domain.Recommend;
+import com.example.dgbackend.domain.recommend.Recommend;
 import com.example.dgbackend.domain.recommend.dto.RecommendResponse;
 import com.example.dgbackend.domain.recommend.repository.RecommendRepository;
 import com.example.dgbackend.global.common.response.code.status.ErrorStatus;

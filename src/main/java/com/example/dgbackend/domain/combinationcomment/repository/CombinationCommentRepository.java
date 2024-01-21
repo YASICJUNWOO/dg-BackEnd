@@ -1,7 +1,7 @@
 package com.example.dgbackend.domain.combinationcomment.repository;
 
-import com.example.dgbackend.domain.combination.domain.Combination;
-import com.example.dgbackend.domain.combinationcomment.domain.CombinationComment;
+import com.example.dgbackend.domain.combination.Combination;
+import com.example.dgbackend.domain.combinationcomment.CombinationComment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

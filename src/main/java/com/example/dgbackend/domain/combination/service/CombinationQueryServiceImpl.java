@@ -1,14 +1,16 @@
 package com.example.dgbackend.domain.combination.service;
 
-import com.example.dgbackend.domain.combination.domain.Combination;
+import com.example.dgbackend.domain.combination.Combination;
 import com.example.dgbackend.domain.combination.dto.CombinationResponse;
 import com.example.dgbackend.domain.combination.repository.CombinationRepository;
-import com.example.dgbackend.domain.combinationcomment.domain.CombinationComment;
+import com.example.dgbackend.domain.combinationcomment.CombinationComment;
+import com.example.dgbackend.domain.combinationcomment.dto.CombinationCommentResponse;
 import com.example.dgbackend.domain.combinationcomment.service.CombinationCommentQueryService;
 import com.example.dgbackend.domain.combinationimage.CombinationImage;
 import com.example.dgbackend.domain.hashtagoption.HashTagOption;
 import com.example.dgbackend.domain.hashtagoption.repository.HashTagOptionRepository;
 import com.example.dgbackend.domain.member.Member;
+import com.example.dgbackend.domain.member.dto.MemberResponse;
 import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
 import com.example.dgbackend.global.exception.ApiException;
 import lombok.RequiredArgsConstructor;
@@ -20,11 +22,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static com.example.dgbackend.domain.combination.dto.CombinationResponse.*;
+import static com.example.dgbackend.domain.combinationcomment.dto.CombinationCommentResponse.toCombinationCommentResult;
+import static com.example.dgbackend.domain.member.dto.MemberResponse.toMemberResult;
 
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class CombinationQueryServiceImpl {
+public class CombinationQueryServiceImpl implements CombinationQueryService{
 
     private final CombinationRepository combinationRepository;
     private final HashTagOptionRepository hashTagOptionRepository;
@@ -61,13 +65,13 @@ public class CombinationQueryServiceImpl {
 
         // Member
         Member member = combination.getMember();
-        MemberResult memberResult = toMemberResult(member);
+        MemberResponse.MemberResult memberResult = toMemberResult(member);
 
         // CombinationComment
         Page<CombinationComment> combinationComments =
                 combinationCommentQueryService.getCombinationCommentFromCombination(combination, PageRequest.of(0, 10));
 
-        CombinationCommentResult combinationCommentResult = toCombinationCommentResult(combinationComments);
+        CombinationCommentResponse.CombinationCommentResult combinationCommentResult = toCombinationCommentResult(combinationComments);
 
         return toCombinationDetailDTO(combinationResult, memberResult, combinationCommentResult);
     }
