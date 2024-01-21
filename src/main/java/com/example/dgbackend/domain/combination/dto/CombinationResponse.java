@@ -2,6 +2,9 @@ package com.example.dgbackend.domain.combination.dto;
 
 import com.example.dgbackend.domain.combination.domain.Combination;
 import com.example.dgbackend.domain.combinationcomment.domain.CombinationComment;
+import com.example.dgbackend.domain.combinationimage.domain.CombinationImage;
+import com.example.dgbackend.domain.hashtagoption.HashTagOption;
+import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.combinationimage.CombinationImage;
 import com.example.dgbackend.domain.hashtagoption.HashTagOption;
 import com.example.dgbackend.domain.member.domain.Member;
@@ -11,6 +14,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -170,6 +174,25 @@ public class CombinationResponse {
                 .content(combination.getContent())
                 .hashTagList(hashTagList)
                 .combinationImageUrlList(combinationImageUrlList)
+                .build();
+    }
+
+    /**
+     * 작성, 수정, 삭제시 응답 DTO
+     */
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    public static class CombinationProcResult {
+        Long combinationId;
+        LocalDateTime createdAt;
+    }
+
+    public static CombinationProcResult toCombinationProcResult(Combination combination) {
+        return CombinationProcResult.builder()
+                .combinationId(combination.getId())
+                .createdAt(LocalDateTime.now())
                 .build();
     }
 }

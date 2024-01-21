@@ -1,4 +1,4 @@
-package com.example.dgbackend.domain.combinationimage;
+package com.example.dgbackend.domain.combinationimage.domain;
 
 import com.example.dgbackend.domain.combination.domain.Combination;
 import com.example.dgbackend.global.common.BaseTimeEntity;
@@ -30,4 +30,7 @@ public class CombinationImage extends BaseTimeEntity {
     @JoinColumn(name = "combination_id")
     private Combination combination;
 
+    public void setCombination(Combination combination) {
+        this.combination = combination;
+    }
 }
