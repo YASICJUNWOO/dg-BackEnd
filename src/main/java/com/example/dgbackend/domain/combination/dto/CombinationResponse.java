@@ -24,8 +24,8 @@ public class CombinationResponse {
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
-    public static class CombinationPreviewDTOList {
-        List<CombinationPreviewDTO> combinationList;
+    public static class CombinationPreviewResultList {
+        List<CombinationPreviewResult> combinationList;
         Integer listSize;
         Integer totalPage;
         Long totalElements;
@@ -37,7 +37,7 @@ public class CombinationResponse {
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
-    public static class CombinationPreviewDTO {
+    public static class CombinationPreviewResult {
         String title;
         String combinationImageUrl;
         Long likeCount;
@@ -46,15 +46,15 @@ public class CombinationResponse {
     }
 
     // Page<Combination> -> Page<CombinationPreviewDTO> 로 변환
-    public static CombinationPreviewDTOList toCombinationPreviewDTOList(Page<Combination> combinations,
+    public static CombinationPreviewResultList toCombinationPreviewResultList(Page<Combination> combinations,
                                                                         List<List<HashTagOption>> hashTagOptions) {
 
-        List<CombinationPreviewDTO> combinationPreviewDTOS = combinations.getContent()
+        List<CombinationPreviewResult> combinationPreviewDTOS = combinations.getContent()
                 .stream()
-                .map(cb -> toCombinationPreviewDTO(cb, hashTagOptions))
+                .map(cb -> toCombinationPreviewResult(cb, hashTagOptions))
                 .collect(Collectors.toList());
 
-        return CombinationPreviewDTOList.builder()
+        return CombinationPreviewResultList.builder()
                 .combinationList(combinationPreviewDTOS)
                 .listSize(combinationPreviewDTOS.size())
                 .totalPage(combinations.getTotalPages())
@@ -65,7 +65,7 @@ public class CombinationResponse {
     }
 
     // Combination -> CombinationPreviewDTO로 변환
-    public static CombinationPreviewDTO toCombinationPreviewDTO(Combination combination,
+    public static CombinationPreviewResult toCombinationPreviewResult(Combination combination,
                                                                 List<List<HashTagOption>> hashTagOptions) {
         // TODO: 대표 이지미 정하기
         String imageUrl = combination.getCombinationImages()
@@ -82,7 +82,7 @@ public class CombinationResponse {
                         .map(hto -> hto.getHashTag().getName()))
                 .toList();
 
-        return CombinationPreviewDTO.builder()
+        return CombinationPreviewResult.builder()
                 .title(combination.getTitle())
                 .combinationImageUrl(imageUrl)
                 .likeCount(combination.getLikeCount())
@@ -98,16 +98,16 @@ public class CombinationResponse {
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
-    public static class CombinationDetailDTO {
+    public static class CombinationDetailResult {
         CombinationResult combinationResult;
         MemberResponse.MemberResult memberResult;
         CombinationCommentResponse.CombinationCommentResult combinationCommentResult;
     }
 
-    public static CombinationDetailDTO toCombinationDetailDTO(CombinationResult combinationResult,
+    public static CombinationDetailResult toCombinationDetailResult(CombinationResult combinationResult,
                                                               MemberResponse.MemberResult memberResult,
                                                               CombinationCommentResponse.CombinationCommentResult combinationCommentResult) {
-        return CombinationDetailDTO.builder()
+        return CombinationDetailResult.builder()
                 .combinationResult(combinationResult)
                 .memberResult(memberResult)
                 .combinationCommentResult(combinationCommentResult)
@@ -139,7 +139,6 @@ public class CombinationResponse {
                 .build();
     }
 
-
     /**
      * 오늘의 조합 수정 정보 조회
      */
@@ -147,14 +146,14 @@ public class CombinationResponse {
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
-    public static class CombinationEditDTO {
+    public static class CombinationEditResult {
         String title;
         String content;
         List<String> hashTagList;
         List<String> combinationImageUrlList;
     }
 
-    public static CombinationEditDTO toCombinationEditDTO(Combination combination,
+    public static CombinationEditResult toCombinationEditResult(Combination combination,
                                                           List<HashTagOption> hashTagOptions,
                                                           List<CombinationImage> combinationImages) {
 
@@ -166,7 +165,7 @@ public class CombinationResponse {
                 .map(CombinationImage::getImageUrl)
                 .toList();
 
-        return CombinationEditDTO.builder()
+        return CombinationEditResult.builder()
                 .title(combination.getTitle())
                 .content(combination.getContent())
                 .hashTagList(hashTagList)

@@ -66,4 +66,12 @@ public class Combination extends BaseTimeEntity {
         combinationComments.add(combinationComment);
         combinationComment.setCombination(this);
     }
+
+    /**
+     * update 함수
+     */
+    public void updateCombination(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 }

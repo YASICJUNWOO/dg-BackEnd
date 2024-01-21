@@ -14,6 +14,7 @@ public class CombinationRequest {
         String title;
         String content;
         List<String> hashTagNameList;
+        List<String> combinationImageList;
     }
 
 }

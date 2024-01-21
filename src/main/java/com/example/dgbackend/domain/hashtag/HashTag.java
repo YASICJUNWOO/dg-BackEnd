@@ -1,11 +1,13 @@
 package com.example.dgbackend.domain.hashtag;
 
+import com.example.dgbackend.domain.hashtagoption.HashTagOption;
 import com.example.dgbackend.global.common.BaseTimeEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Builder
 @Getter

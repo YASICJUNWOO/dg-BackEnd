@@ -8,4 +8,6 @@ import java.util.List;
 public interface CombinationImageRepository extends JpaRepository<CombinationImage, Long> {
 
      List<CombinationImage> findAllByCombinationId(Long combinationId);
+
+     void deleteByImageUrl(String imageUrl);
 }

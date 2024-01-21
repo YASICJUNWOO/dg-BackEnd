@@ -11,4 +11,6 @@ public interface CombinationCommandService {
     CombinationResponse.CombinationProcResult uploadCombination(Long recommendId, WriteCombination request, List<MultipartFile> multipartFiles);
 
     CombinationResponse.CombinationProcResult deleteCombination(Long combinationId);
+
+    CombinationResponse.CombinationProcResult editCombination(Long combinationId, WriteCombination request);
 }

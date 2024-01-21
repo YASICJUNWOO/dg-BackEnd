@@ -70,6 +70,17 @@ public class CombinationController {
         return ApiResponse.onSuccess(combinationQueryService.getCombinationEditDTO(combinationId));
     }
 
+    @Operation(summary = "오늘의 조합 수정", description = "특정 오늘의 조합을 수정합니다.")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "오늘의 조합 수정 성공")
+    })
+    @Parameter(name = "combinationId", description = "오늘의 조합 Id, Path Variable 입니다.")
+    @PatchMapping("/{combinationId}")
+    public ApiResponse<CombinationResponse.CombinationProcResult> editProcCombination(@PathVariable(name = "combinationId") Long combinationId,
+                                                                                      @RequestPart(name = "writeCombination") CombinationRequest.WriteCombination request) throws IOException {
+        return ApiResponse.onSuccess(combinationCommandService.editCombination(combinationId, request));
+    }
+
     @Operation(summary = "오늘의 조합 삭제", description = "특정 오늘의 조합을 삭제합니다.")
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "오늘의 조합 삭제 성공")

@@ -11,12 +11,15 @@ import java.util.List;
 
 public class CombinationCommentResponse {
 
+    /**
+     * 오늘의 조합에 작성된 댓글 조회
+     */
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
     public static class CombinationCommentResult {
-        List<CombinationCommentPreviewDTO> combinationCommentList;
+        List<CombinationCommentPreviewResult> combinationCommentList;
         Integer listSize;
         Integer totalPage;
         Long totalElements;
@@ -28,14 +31,14 @@ public class CombinationCommentResponse {
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
-    public static class CombinationCommentPreviewDTO {
+    public static class CombinationCommentPreviewResult {
         Long combinationCommentId;
         String content;
         Long parentId;
     }
 
-    public static CombinationCommentPreviewDTO toCommentPreviewDTO(CombinationComment comment) {
-        return CombinationCommentPreviewDTO.builder()
+    public static CombinationCommentPreviewResult toCommentPreviewResult(CombinationComment comment) {
+        return CombinationCommentPreviewResult.builder()
                 .combinationCommentId(comment.getId())
                 .content(comment.getContent())
                 .parentId(comment.getParentId())
@@ -44,8 +47,8 @@ public class CombinationCommentResponse {
 
     public static CombinationCommentResult toCombinationCommentResult(Page<CombinationComment> comments) {
 
-        List<CombinationCommentPreviewDTO> commentPreviewDTOS = comments.stream()
-                .map(CombinationCommentResponse::toCommentPreviewDTO)
+        List<CombinationCommentPreviewResult> commentPreviewDTOS = comments.stream()
+                .map(CombinationCommentResponse::toCommentPreviewResult)
                 .toList();
 
         return CombinationCommentResult.builder()

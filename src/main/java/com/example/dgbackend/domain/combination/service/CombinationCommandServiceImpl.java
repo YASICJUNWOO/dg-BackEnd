@@ -5,6 +5,7 @@ import com.example.dgbackend.domain.combination.dto.CombinationRequest;
 import com.example.dgbackend.domain.combination.dto.CombinationResponse;
 import com.example.dgbackend.domain.combination.repository.CombinationRepository;
 import com.example.dgbackend.domain.combinationimage.CombinationImage;
+import com.example.dgbackend.domain.combinationimage.service.CombinationImageCommandService;
 import com.example.dgbackend.domain.combinationimage.service.CombinationImageQueryService;
 import com.example.dgbackend.domain.combinationlike.service.CombinationLikeCommandService;
 import com.example.dgbackend.domain.hashtag.service.HashTagCommandService;
@@ -35,7 +36,11 @@ public class CombinationCommandServiceImpl implements CombinationCommandService{
     private final HashTagOptionCommandService hashTagOptionCommandService;
     private final CombinationLikeCommandService combinationLikeCommandService;
     private final CombinationImageQueryService combinationImageQueryService;
+    private final CombinationImageCommandService combinationImageCommandService;
 
+    /**
+     * 오늘의 조합 작성
+     */
     @Override
     public CombinationResponse.CombinationProcResult uploadCombination(Long recommendId, CombinationRequest.WriteCombination request,
                                                  List<MultipartFile> multipartFiles) {
@@ -86,6 +91,9 @@ public class CombinationCommandServiceImpl implements CombinationCommandService{
         return combination;
     }
 
+    /**
+     * 오늘의 조합 삭제
+     */
     @Override
     public CombinationResponse.CombinationProcResult deleteCombination(Long combinationId) {
 
@@ -109,5 +117,25 @@ public class CombinationCommandServiceImpl implements CombinationCommandService{
         imageUrls.forEach(s3Service::deleteFile);
     }
 
+    /**
+     * 오늘의 조합 수정
+     */
+    @Override
+    public CombinationResponse.CombinationProcResult editCombination(Long combinationId, CombinationRequest.WriteCombination request) {
 
+        Combination combination = combinationRepository.findById(combinationId).orElseThrow(
+                () -> new ApiException(ErrorStatus._COMBINATION_NOT_FOUND)
+        );
+
+        // Combination - title, content 수정
+        combination.updateCombination(request.getTitle(), request.getContent());
+
+        // HashTagOption, HashTag - name 수정
+        hashTagOptionCommandService.updateHashTagOption(combination, request.getHashTagNameList());
+
+        // CombinationImage - imageUrl 수정
+        combinationImageCommandService.updateCombinationImage(combination, request.getCombinationImageList());
+
+        return CombinationResponse.toCombinationProcResult(combinationId);
+    }
 }

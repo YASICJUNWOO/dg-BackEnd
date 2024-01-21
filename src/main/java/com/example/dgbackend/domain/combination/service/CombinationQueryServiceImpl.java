@@ -3,7 +3,7 @@ package com.example.dgbackend.domain.combination.service;
 import com.example.dgbackend.domain.combination.Combination;
 import com.example.dgbackend.domain.combination.dto.CombinationResponse;
 import com.example.dgbackend.domain.combination.repository.CombinationRepository;
-import com.example.dgbackend.domain.combinationcomment.CombinationComment;
+import com.example.dgbackend.domain.combinationcomment.domain.CombinationComment;
 import com.example.dgbackend.domain.combinationcomment.dto.CombinationCommentResponse;
 import com.example.dgbackend.domain.combinationcomment.service.CombinationCommentQueryService;
 import com.example.dgbackend.domain.combinationimage.CombinationImage;
@@ -38,7 +38,7 @@ public class CombinationQueryServiceImpl implements CombinationQueryService{
     오늘의 조합 홈 조회(페이징)
      */
     @Override
-    public CombinationPreviewDTOList getCombinationPreviewDTOList(Integer page) {
+    public CombinationPreviewResultList getCombinationPreviewResultList(Integer page) {
         Page<Combination> combinations = combinationRepository.findAll(PageRequest.of(page, 10));
 
         List<Combination> combinationList = combinations.getContent();
@@ -46,14 +46,14 @@ public class CombinationQueryServiceImpl implements CombinationQueryService{
                 .map(hashTagOptionRepository::findAllByCombinationWithFetch)
                 .toList();
 
-        return toCombinationPreviewDTOList(combinations, hashTagOptionList);
+        return toCombinationPreviewResultList(combinations, hashTagOptionList);
     }
 
     /*
      * 오늘의 조합 상세 조회
      */
     @Override
-    public CombinationDetailDTO getCombinationDetailDTO(Long combinationId) {
+    public CombinationDetailResult getCombinationDetailResult(Long combinationId) {
 
         // Combination
         Combination combination = combinationRepository.findById(combinationId).orElseThrow(
@@ -73,14 +73,14 @@ public class CombinationQueryServiceImpl implements CombinationQueryService{
 
         CombinationCommentResponse.CombinationCommentResult combinationCommentResult = toCombinationCommentResult(combinationComments);
 
-        return toCombinationDetailDTO(combinationResult, memberResult, combinationCommentResult);
+        return toCombinationDetailResult(combinationResult, memberResult, combinationCommentResult);
     }
 
     /*
      * 오늘의 조합 수정 정보 조회
      */
     @Override
-    public CombinationEditDTO getCombinationEditDTO(Long combinationId) {
+    public CombinationEditResult getCombinationEditResult(Long combinationId) {
 
         Combination combination = combinationRepository.findById(combinationId).orElseThrow(
                 () -> new ApiException(ErrorStatus._COMBINATION_NOT_FOUND)
@@ -90,6 +90,6 @@ public class CombinationQueryServiceImpl implements CombinationQueryService{
 
         List<HashTagOption> hashTagOptions = hashTagOptionRepository.findAllByCombinationWithFetch(combination);
 
-        return CombinationResponse.toCombinationEditDTO(combination, hashTagOptions, combinationImages);
+        return CombinationResponse.toCombinationEditResult(combination, hashTagOptions, combinationImages);
     }
 }
