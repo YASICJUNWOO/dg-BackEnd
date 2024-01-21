@@ -8,4 +8,6 @@ public interface CombinationQueryService {
 
     CombinationPreviewDTOList getCombinationPreviewDTOList(Integer page);
     CombinationDetailDTO getCombinationDetailDTO(Long combinationId);
+
+    CombinationEditDTO getCombinationEditDTO(Long combinationId);
 }

@@ -12,6 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 import static com.example.dgbackend.domain.combination.dto.CombinationResponse.*;
 import static com.example.dgbackend.domain.combinationcomment.dto.CombinationCommentResponse.toCombinationCommentResult;
 import static com.example.dgbackend.domain.member.dto.MemberResponse.toMemberResult;
+import java.util.List;
+
+import static com.example.dgbackend.domain.combination.dto.CombinationResponse.*;
 
 @Service
 @Transactional(readOnly = true)
@@ -19,6 +22,7 @@ import static com.example.dgbackend.domain.member.dto.MemberResponse.toMemberRes
 public class CombinationQueryServiceImpl implements CombinationQueryService{
 
     private final CombinationRepository combinationRepository;
+    private final HashTagOptionRepository hashTagOptionRepository;
     private final CombinationCommentQueryService combinationCommentQueryService;
 
     /*
@@ -27,31 +31,57 @@ public class CombinationQueryServiceImpl implements CombinationQueryService{
     @Override
     public CombinationPreviewDTOList getCombinationPreviewDTOList(Integer page) {
         Page<Combination> combinations = combinationRepository.findAll(PageRequest.of(page, 10));
-        return toCombinationPreviewDTOList(combinations);
+
+        List<Combination> combinationList = combinations.getContent();
+        List<List<HashTagOption>> hashTagOptionList = combinationList.stream()
+                .map(hashTagOptionRepository::findAllByCombinationWithFetch)
+                .toList();
+
+        return toCombinationPreviewDTOList(combinations, hashTagOptionList);
     }
 
-    /**
+    /*
      * 오늘의 조합 상세 조회
      * @param combinationId
      */
     @Override
     public CombinationDetailDTO getCombinationDetailDTO(Long combinationId) {
 
-        // TODO: 예외 처리 - Combination
-        Combination combination = combinationRepository.findById(combinationId).get();
+        // Combination
+        Combination combination = combinationRepository.findById(combinationId).orElseThrow(
+                () -> new ApiException(ErrorStatus._COMBINATION_NOT_FOUND)
+        );
 
-        CombinationResult combinationResult = toCombinationResult(combination);
+        List<HashTagOption> hashTagOptions = hashTagOptionRepository.findAllByCombinationWithFetch(combination);
+        CombinationResult combinationResult = toCombinationResult(combination, hashTagOptions);
 
         // Member
         Member member = combination.getMember();
-        MemberResponse.MemberResult memberResult = toMemberResult(member);
+        MemberResult memberResult = toMemberResult(member);
 
         // CombinationComment
         Page<CombinationComment> combinationComments =
                 combinationCommentQueryService.getCombinationCommentFromCombination(combination, PageRequest.of(0, 10));
 
-        CombinationCommentResponse.CombinationCommentResult combinationCommentResult = toCombinationCommentResult(combinationComments);
+        CombinationCommentResult combinationCommentResult = toCombinationCommentResult(combinationComments);
 
         return toCombinationDetailDTO(combinationResult, memberResult, combinationCommentResult);
+    }
+
+    /*
+     * 오늘의 조합 수정 정보 조회
+     */
+    @Override
+    public CombinationEditDTO getCombinationEditDTO(Long combinationId) {
+
+        Combination combination = combinationRepository.findById(combinationId).orElseThrow(
+                () -> new ApiException(ErrorStatus._COMBINATION_NOT_FOUND)
+        );
+
+        List<CombinationImage> combinationImages = combination.getCombinationImages();
+
+        List<HashTagOption> hashTagOptions = hashTagOptionRepository.findAllByCombinationWithFetch(combination);
+
+        return CombinationResponse.toCombinationEditDTO(combination, hashTagOptions, combinationImages);
     }
 }

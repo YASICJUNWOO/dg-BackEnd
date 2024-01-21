@@ -2,10 +2,9 @@ package com.example.dgbackend.domain.combination.dto;
 
 import com.example.dgbackend.domain.combination.domain.Combination;
 import com.example.dgbackend.domain.combinationcomment.domain.CombinationComment;
-import com.example.dgbackend.domain.combinationcomment.dto.CombinationCommentResponse;
 import com.example.dgbackend.domain.combinationimage.CombinationImage;
-import com.example.dgbackend.domain.member.dto.MemberResponse;
-import com.example.dgbackend.domain.combinationimage.CombinationImage;
+import com.example.dgbackend.domain.hashtagoption.HashTagOption;
+import com.example.dgbackend.domain.member.domain.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,6 +12,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CombinationResponse {
 
@@ -41,14 +41,17 @@ public class CombinationResponse {
         String combinationImageUrl;
         Long likeCount;
         Long commentCount;
+        List<String> hashTageList;
     }
 
     // Page<Combination> -> Page<CombinationPreviewDTO> 로 변환
-    public static CombinationPreviewDTOList toCombinationPreviewDTOList(Page<Combination> combinations) {
+    public static CombinationPreviewDTOList toCombinationPreviewDTOList(Page<Combination> combinations,
+                                                                        List<List<HashTagOption>> hashTagOptions) {
 
-        List<CombinationPreviewDTO> combinationPreviewDTOS = combinations.stream()
-                .map(CombinationResponse::toCombinationPreviewDTO)
-                .toList();
+        List<CombinationPreviewDTO> combinationPreviewDTOS = combinations.getContent()
+                .stream()
+                .map(cb -> toCombinationPreviewDTO(cb, hashTagOptions))
+                .collect(Collectors.toList());
 
         return CombinationPreviewDTOList.builder()
                 .combinationList(combinationPreviewDTOS)
@@ -61,7 +64,8 @@ public class CombinationResponse {
     }
 
     // Combination -> CombinationPreviewDTO로 변환
-    public static CombinationPreviewDTO toCombinationPreviewDTO(Combination combination) {
+    public static CombinationPreviewDTO toCombinationPreviewDTO(Combination combination,
+                                                                List<List<HashTagOption>> hashTagOptions) {
         // TODO: 대표 이지미 정하기
         String imageUrl = combination.getCombinationImages()
                 .stream()
@@ -69,11 +73,20 @@ public class CombinationResponse {
                 .map(CombinationImage::getImageUrl)
                 .orElse(null);
 
+        // 해시태그 정보
+        List<String> hashTagList = hashTagOptions.stream()
+                .filter(htoList -> htoList.stream()
+                        .anyMatch(hto -> hto.getCombination().equals(combination)))
+                .flatMap(htoList -> htoList.stream()
+                        .map(hto -> hto.getHashTag().getName()))
+                .toList();
+
         return CombinationPreviewDTO.builder()
                 .title(combination.getTitle())
                 .combinationImageUrl(imageUrl)
                 .likeCount(combination.getLikeCount())
                 .commentCount(combination.getCommentCount())
+                .hashTageList(hashTagList)
                 .build();
     }
 
@@ -86,13 +99,13 @@ public class CombinationResponse {
     @Getter
     public static class CombinationDetailDTO {
         CombinationResult combinationResult;
-        MemberResponse.MemberResult memberResult;
-        CombinationCommentResponse.CombinationCommentResult combinationCommentResult;
+        MemberResult memberResult;
+        CombinationCommentResult combinationCommentResult;
     }
 
     public static CombinationDetailDTO toCombinationDetailDTO(CombinationResult combinationResult,
-                                                              MemberResponse.MemberResult memberResult,
-                                                              CombinationCommentResponse.CombinationCommentResult combinationCommentResult) {
+                                                              MemberResult memberResult,
+                                                              CombinationCommentResult combinationCommentResult) {
         return CombinationDetailDTO.builder()
                 .combinationResult(combinationResult)
                 .memberResult(memberResult)
@@ -107,16 +120,56 @@ public class CombinationResponse {
     public static class CombinationResult {
         Long combinationId;
         String title;
-        String info;
         String content;
+        List<String> hashTagList;
     }
 
-    public static CombinationResult toCombinationResult(Combination combination) {
+    public static CombinationResult toCombinationResult(Combination combination,
+                                                        List<HashTagOption> hashTagOptions) {
+        List<String> hashTagList = hashTagOptions.stream()
+                .map(hto -> hto.getHashTag().getName())
+                .toList();
+
         return CombinationResult.builder()
                 .combinationId(combination.getId())
                 .title(combination.getTitle())
                 .content(combination.getContent())
+                .hashTagList(hashTagList)
                 .build();
     }
 
+
+    /**
+     * 오늘의 조합 수정 정보 조회
+     */
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    public static class CombinationEditDTO {
+        String title;
+        String content;
+        List<String> hashTagList;
+        List<String> combinationImageUrlList;
+    }
+
+    public static CombinationEditDTO toCombinationEditDTO(Combination combination,
+                                                          List<HashTagOption> hashTagOptions,
+                                                          List<CombinationImage> combinationImages) {
+
+        List<String> hashTagList = hashTagOptions.stream()
+                .map(hto -> hto.getHashTag().getName())
+                .toList();
+
+        List<String> combinationImageUrlList = combinationImages.stream()
+                .map(CombinationImage::getImageUrl)
+                .toList();
+
+        return CombinationEditDTO.builder()
+                .title(combination.getTitle())
+                .content(combination.getContent())
+                .hashTagList(hashTagList)
+                .combinationImageUrlList(combinationImageUrlList)
+                .build();
+    }
 }

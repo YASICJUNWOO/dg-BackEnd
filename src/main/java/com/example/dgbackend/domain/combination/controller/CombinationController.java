@@ -37,4 +37,15 @@ public class CombinationController {
     public ApiResponse<CombinationResponse.CombinationDetailDTO> getDetailCombination(@PathVariable(name = "combinationId") Long combinationId) {
         return ApiResponse.onSuccess(combinationQueryService.getCombinationDetailDTO(combinationId));
     }
+
+    @Operation(summary = "오늘의 조합 수정정보 조회", description = "특정 오늘의 조합의 수정할 정보를 조회합니다.")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "오늘의 조합 수정 정보 조회 성공")
+    })
+    @Parameter(name = "combinationId", description = "오늘의 조합 Id, Path Variable 입니다.")
+    @GetMapping("/{combinationId}/edit")
+    public ApiResponse<CombinationResponse.CombinationEditDTO> editCombination(@PathVariable(name = "combinationId") Long combinationId) {
+        return ApiResponse.onSuccess(combinationQueryService.getCombinationEditDTO(combinationId));
+    }
+
 }
