@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+
 @RequiredArgsConstructor
 @PropertySource("classpath:application.yml")
 @Service
@@ -88,5 +89,4 @@ public class S3Service {
             throw new ApiException(ErrorStatus._S3_IMAGE_NOT_FOUND);
         }
     }
-
 }
