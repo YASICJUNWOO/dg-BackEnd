@@ -39,6 +39,15 @@ public enum ErrorStatus implements BaseErrorCode {
     _DELETE_RECIPE(HttpStatus.BAD_REQUEST, "RECIPE_002", "삭제된 레시피입니다."),
     _ALREADY_CREATE_RECIPE(HttpStatus.BAD_REQUEST, "RECIPE_003", "이미 존재하는 레시피입니다.");
 
+    //레시피
+    _EMPTY_RECIPE(HttpStatus.CONFLICT, "RECIPE_001", "존재하지 않는 레시피입니다."),
+    _DELETE_RECIPE(HttpStatus.BAD_REQUEST, "RECIPE_002", "삭제된 레시피입니다."),
+    _ALREADY_CREATE_RECIPE(HttpStatus.BAD_REQUEST, "RECIPE_003", "이미 존재하는 레시피입니다."),
+
+    //레시피 댓글
+    _EMPTY_RECIPE_COMMENT(HttpStatus.CONFLICT, "RECIPE_COMMENT_001", "존재하지 않는 레시피 댓글입니다."),
+    _OVER_DEPTH_RECIPE_COMMENT(HttpStatus.BAD_REQUEST, "RECIPE_COMMENT_003", "대댓글까지만 가능합니다.");
+
     private final HttpStatus httpStatus;
     private final String code;
     private final String message;
