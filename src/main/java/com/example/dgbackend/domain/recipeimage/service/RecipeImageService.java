@@ -36,6 +36,29 @@ public class RecipeImageService {
                 .toList();
     }
 
+    @Transactional
+    public RecipeImageResponse createRecipeImage(RecipeImageVO.FileVO request) {
+        Recipe recipe = recipeService.getRecipe(request.getRecipeId());
+
+        //파일 없을 시 예외처리
+        List<MultipartFile> multipartFiles = validFileList(request.getFileList());
+
+        //S3에 이미지 업로드하고 URL 받아오기
+        List<String> imageURLs = s3Service.uploadFile(multipartFiles).stream()
+                .map(S3Result::getImgUrl)
+                .toList();
+
+        //RecipeImage(url 리스트, recipe) 엔티티 생성
+        List<RecipeImage> recipeImages = imageURLs.stream()
+                .map(imageURL -> RecipeImageRequest.toEntity(recipe, imageURL))
+                .toList();
+
+        //RecipeImage 엔티티 모두 저장
+        recipeImageRepository.saveAll(recipeImages);
+
+        return RecipeImageResponse.toResponse(RecipeResponse.toResponse(recipe), imageURLs);
+    }
+
     //파일 없을 시 예외처리
     private List<MultipartFile> validFileList(List<MultipartFile> request) {
 
