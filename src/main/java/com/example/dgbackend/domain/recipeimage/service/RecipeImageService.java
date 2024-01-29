@@ -69,6 +69,30 @@ public class RecipeImageService {
         return request;
     }
 
+    @Transactional
+    public RecipeImageResponse updateRecipeImage(RecipeImageVO.FileVO request) {
+        Recipe recipe = recipeService.getRecipe(request.getRecipeId());
+
+        //새로운 이미지 업로드
+        if (request.getFileList() != null && !request.getFileList().isEmpty()) {
+            createRecipeImage(request);
+        }
+
+        List<String> deleteFileUrlList = request.getDeleteFileUrlList();
+
+        //삭제 요청 이미지 삭제
+        if (deleteFileUrlList != null && !deleteFileUrlList.isEmpty()) {
+            deleteFileUrlList.forEach(
+                    deleteFileUrl -> {
+                        deleteRecipeImage(deleteFileUrl);
+                        s3Service.deleteFile(deleteFileUrl);
+                    }
+            );
+        }
+
+        return RecipeImageResponse.toResponse(RecipeResponse.toResponse(recipe), getRecipeImages(recipe.getId()));
+    }
+
     //recipeImageRepository에서 imageUrl로 조회해서 있으면 삭제하고 s3에서도 삭제
     //없다면 예외처리
     public void deleteRecipeImage(String imageUrl) {
