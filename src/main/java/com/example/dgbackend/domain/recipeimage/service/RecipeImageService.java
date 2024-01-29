@@ -69,4 +69,17 @@ public class RecipeImageService {
         return request;
     }
 
+    //recipeImageRepository에서 imageUrl로 조회해서 있으면 삭제하고 s3에서도 삭제
+    //없다면 예외처리
+    public void deleteRecipeImage(String imageUrl) {
+        recipeImageRepository.findByImageUrl(imageUrl)
+                .ifPresentOrElse(recipeImageEntity -> {
+                            recipeImageRepository.delete(recipeImageEntity);
+                            s3Service.deleteFile(recipeImageEntity.getImageUrl());
+                        },
+                        () -> {
+                            throw new ApiException(ErrorStatus._NOTHING_RECIPE_IMAGE);
+                        });
+    }
+
 }
