@@ -102,7 +102,7 @@ public class RecipeImageService {
                             s3Service.deleteFile(recipeImageEntity.getImageUrl());
                         },
                         () -> {
-                            throw new ApiException(ErrorStatus._NOTHING_RECIPE_IMAGE);
+                            throw new ApiException(ErrorStatus._EMPTY_RECIPE_IMAGE);
                         });
     }
 
