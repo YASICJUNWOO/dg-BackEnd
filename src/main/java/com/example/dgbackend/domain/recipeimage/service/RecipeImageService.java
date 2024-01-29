@@ -106,4 +106,10 @@ public class RecipeImageService {
                         });
     }
 
+    public void deleteAllRecipeImage(Long recipeId) {
+        recipeImageRepository.findAllByRecipeId(recipeId).forEach(recipeImageEntity -> {
+            deleteRecipeImage(recipeImageEntity.getImageUrl());
+        });
+    }
+
 }
