@@ -56,4 +56,12 @@ public class RecipeImageController {
         return ApiResponse.onSuccess(recipeImageService.updateRecipeImage(recipeImageRequestVO));
     }
 
+    @Operation
+    @Parameter(name = "recipeId", description = "레시피 id", required = true)
+    @DeleteMapping
+    public ApiResponse<String> deleteRecipeImage(@RequestParam("recipeId") Long recipeId) {
+        recipeImageService.deleteAllRecipeImage(recipeId);
+        return ApiResponse.onSuccess("삭제 성공");
+    }
+
 }
