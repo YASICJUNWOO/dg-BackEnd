@@ -44,4 +44,16 @@ public class RecipeImageController {
         return ApiResponse.onSuccess(recipeImageService.createRecipeImage(recipeImageRequestVO));
     }
 
+    @Operation(summary = "레시피 이미지 수정", description = "레시피 이미지 수정")
+    @Parameter(name = "recipeId", description = "레시피 id", required = true)
+    @PatchMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ApiResponse<RecipeImageResponse> updateRecipeImage(@RequestPart(value = "file", required = false) @Parameter(name = "file", description = "파일", required = false) List<MultipartFile> file,
+                                                              @RequestPart(value = "deleteList", required = false) @Parameter(name = "deleteList", description = "삭제할 파일 url 리스트", required = false) List<String> deleteFileUrlStringList,
+                                                              @RequestParam("recipeId") Long recipeId) {
+
+        //파일과 레시피 id, 삭제할 파일 url 리스트로 RecipeImageVO.FileRecipe 생성
+        RecipeImageVO.FileVO recipeImageRequestVO = RecipeImageVO.FileVO.of(file, recipeId, deleteFileUrlStringList);
+        return ApiResponse.onSuccess(recipeImageService.updateRecipeImage(recipeImageRequestVO));
+    }
+
 }
