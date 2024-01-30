@@ -103,7 +103,7 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
     public boolean existCombination(Long combinationId) {
         return combinationRepository.existsById(combinationId);
     }
-  
+
     /*
      * Combination 조회
      */
