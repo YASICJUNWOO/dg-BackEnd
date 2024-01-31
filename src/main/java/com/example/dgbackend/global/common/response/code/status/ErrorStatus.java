@@ -40,6 +40,11 @@ public enum ErrorStatus implements BaseErrorCode {
     //인증 관련
     _EMPTY_JWT(HttpStatus.UNAUTHORIZED, "AUTH_001", "JWT가 존재하지 않습니다."),
     _INVALID_JWT(HttpStatus.UNAUTHORIZED, "AUTH_002", "유효하지 않은 JWT입니다."),
+    _REFRESH_TOKEN_NOT_FOUND(HttpStatus.NOT_FOUND, "AUTH_003", "Refresh Token이 존재하지 않습니다."),
+    _EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH_004", "만료된 Token입니다."),
+
+    //Redis 관련
+    _REDIS_NOT_FOUND(HttpStatus.NOT_FOUND, "REDIS_001", "Redis에 존재하지 않는 Key 입니다."),
 
     //주류 추천 관련
     _NULL_DESIRE_LEVEL(HttpStatus.BAD_REQUEST, "RECOMMEND_001", "취하고 싶은 정도를 입력해주세요."),
@@ -57,7 +62,6 @@ public enum ErrorStatus implements BaseErrorCode {
     //레시피 이미지
     _EMPTY_RECIPE_IMAGE(HttpStatus.CONFLICT, "RECIPE_IMAGE_001", "존재하지 않는 레시피 이미지입니다."),
     _NOTHING_RECIPE_IMAGE(HttpStatus.BAD_REQUEST, "RECIPE_IMAGE_001", "레시피 이미지가 없습니다.");
-
 
     private final HttpStatus httpStatus;
     private final String code;
