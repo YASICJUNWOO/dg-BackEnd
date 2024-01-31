@@ -27,6 +27,7 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 public class RecommendCommandServiceImpl implements RecommendCommandService {
+
     private final RecommendRepository recommendRepository;
     private final MemberRepository memberRepository;
     private final RecommendQueryService recommendQueryService;
@@ -154,6 +155,7 @@ public class RecommendCommandServiceImpl implements RecommendCommandService {
         Map<String, Object> prompt = new HashMap<>();
         prompt.put("model", API_CHAT_MODEL);
         prompt.put("messages", messages);
+
 //        Map<String, String> formatType = new HashMap<>();
 //        formatType.put("type", "json_object");
 //        prompt.put("response_format", formatType);
@@ -170,6 +172,7 @@ public class RecommendCommandServiceImpl implements RecommendCommandService {
     requestDTO : 추천 요청 정보
      */
     public String makeCombinationImage(Long memberID, String drinkName, RecommendRequest.RecommendRequestDTO requestDTO) {
+
         // 사용자 선호 정보 추출을 위한 Member 객체 생성
         Member member = memberRepository.findById(memberID).orElseThrow(() -> new ApiException(ErrorStatus._EMPTY_MEMBER));
 
@@ -218,6 +221,7 @@ public class RecommendCommandServiceImpl implements RecommendCommandService {
     weather : 현재 날씨
      */
     private String generateImagePrompt(Member member, String foodName, String drinkyType, String mood, String weather) {
+
         String prompt = "You create the right images based on food and alcohol pairings, " +
                 "considering the given combination, the user's mood, " +
                 "and the current weather. The images should prominently feature both the food and the alcohol. " +
