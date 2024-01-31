@@ -97,7 +97,7 @@ public class CombinationCommentResponse {
     }
 
     /**
-     * 작성, 수정, 삭제 시 응답 DTO
+     * 작성, 수정, 삭제시 응답 DTO
      */
     @Builder
     @AllArgsConstructor
