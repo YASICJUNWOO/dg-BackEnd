@@ -32,7 +32,6 @@ public class RecipeController {
 
     //TODO: @AutenticationPrincipal로 변경
 
-    //Default Member 생성
 
     @Operation(summary = "모든 레시피북 조회", description = "삭제되지 않은 레시피북 목록을 조회합니다.")
     @Parameter(name = "page", description = "페이지 번호, Query Param 입니다.", required = true, example = "0s", in = ParameterIn.QUERY)
@@ -95,3 +94,4 @@ public class RecipeController {
     }
 
 }
+
