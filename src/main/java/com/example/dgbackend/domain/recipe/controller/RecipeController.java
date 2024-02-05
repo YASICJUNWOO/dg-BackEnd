@@ -25,6 +25,17 @@ public class RecipeController {
 
     private final RecipeServiceImpl recipeServiceImpl;
 
+    //TODO: @AutenticationPrincipal로 변경
+    private final MemberRepository memberRepository;
+    private Member member = Member.builder()
+            .name("김동규").email("email@email.com").birthDate("birthDate")
+            .phoneNumber("phoneNumber").nickName("nickName").gender(Gender.MALE).socialType(SocialType.APPLE)
+            .build();
+
+    @PostConstruct
+    public void init() {
+        memberRepository.save(member);
+    }
     //Default Member 생성
     //TODO: @AutenticationPrincipal로 변경
     private final MemberRepository memberRepository;
