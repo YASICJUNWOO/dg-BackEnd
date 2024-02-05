@@ -3,6 +3,7 @@ package com.example.dgbackend.domain.combination.service;
 import static com.example.dgbackend.domain.combination.dto.CombinationResponse.CombinationDetailResult;
 import static com.example.dgbackend.domain.combination.dto.CombinationResponse.CombinationEditResult;
 import static com.example.dgbackend.domain.combination.dto.CombinationResponse.CombinationPreviewResultList;
+import static com.example.dgbackend.domain.combination.dto.CombinationResponse.CombinationMyPageList;
 
 import com.example.dgbackend.domain.combination.Combination;
 
@@ -18,6 +19,17 @@ public interface CombinationQueryService {
 
     Combination getCombination(Long combinationId);
 
+    CombinationMyPageList getCombinationMyPageList(Long memberId, Integer page);
+
     CombinationPreviewResultList getWeeklyBestCombinationPreviewResultList(Integer page);
+
+
+    CombinationMyPageList getCombinationLikeList(Long memberId, Integer page);
+
+    CombinationPreviewResultList findCombinationsListByKeyword(Integer page, String keyword);
+
+    CombinationPreviewResultList findWeeklyBestCombinationsListByKeyWord(Integer page,
+        String keyword);
+
 
 }

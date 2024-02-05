@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface RecipeCommentService {
 
-    List<RecipeCommentResponse> getRecipeComment(Long recipeId);
+    List<RecipeCommentResponse> getRecipeComment(Long recipeId, int page);
 
     RecipeCommentResponse saveRecipeComment(RecipeCommentVO paramVO);
 
@@ -22,4 +22,6 @@ public interface RecipeCommentService {
     RecipeCommentResponse updateRecipeComment(RecipeCommentRequest.Patch requestDTO);
 
     RecipeCommentResponse deleteRecipeComment(Long recipeCommentId);
+
+    boolean deleteAllRecipeComment(Long memberId);
 }

@@ -4,12 +4,11 @@ import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.recipe.Recipe;
 import com.example.dgbackend.domain.recipe.dto.RecipeRequest;
 import com.example.dgbackend.domain.recipe.dto.RecipeResponse;
-
 import java.util.List;
 
 public interface RecipeService {
 
-    List<RecipeResponse> getExistRecipes();
+    List<RecipeResponse> getExistRecipes(int page);
 
     RecipeResponse getRecipeDetail(Long id);
 
@@ -27,4 +26,11 @@ public interface RecipeService {
 
     void isAlreadyCreate(String RecipeName, String memberName);
 
+    RecipeResponse.RecipeMyPageList getRecipeMyPageList(Long memberId, Integer Page);
+
+    RecipeResponse.RecipeMyPageList getRecipeLikeList(Long memberId, Integer Page);
+
+    boolean deleteAllRecipe(Long memberId);
+
+    List<RecipeResponse> findRecipesByKeyword(Integer page, String keyword);
 }
