@@ -2,7 +2,6 @@ package com.example.dgbackend.domain.member;
 
 import com.example.dgbackend.domain.enums.Gender;
 import com.example.dgbackend.domain.enums.Role;
-import com.example.dgbackend.domain.enums.SocialType;
 import com.example.dgbackend.global.common.BaseTimeEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -27,7 +26,7 @@ public class Member extends BaseTimeEntity {
     @NotNull
     private String email;
 
-    @NotNull
+
     private String birthDate; //생일은 String으로 받도록 하였습니다.
 
     @NotNull
@@ -41,8 +40,10 @@ public class Member extends BaseTimeEntity {
     private Gender gender;
 
     @NotNull
-    @Enumerated(EnumType.STRING)
-    private SocialType socialType;
+    private String provider;
+
+    @NotNull
+    private String providerId;
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -89,5 +90,24 @@ public class Member extends BaseTimeEntity {
      */
     public void setDrinkingLimit(String drinkingLimit) {
         this.drinkingLimit = drinkingLimit;
+    }
+
+    public Member update (String name, String nickName, String birthDate, String phoneNumber,  Gender gender) {
+        this.name = name;
+        this.nickName = nickName;
+        this.birthDate = birthDate;
+        this.phoneNumber = phoneNumber;
+        this.gender = gender;
+
+        return this;
+    }
+
+    public String updateProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
+        return profileImageUrl;
+    }
+
+    public void signout() {
+        this.state = false;
     }
 }

@@ -2,10 +2,14 @@ package com.example.dgbackend.domain.recipe;
 
 import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.recipe.dto.RecipeRequest;
+import com.example.dgbackend.domain.recipeimage.RecipeImage;
 import com.example.dgbackend.global.common.BaseTimeEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @AllArgsConstructor
@@ -51,6 +55,9 @@ public class Recipe extends BaseTimeEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
+    private List<RecipeImage> recipeImageList = new ArrayList<>();
+
     public Recipe update(RecipeRequest recipeResponseDto) {
         this.name = recipeResponseDto.getName();
         this.info = recipeResponseDto.getInfo();
@@ -67,4 +74,23 @@ public class Recipe extends BaseTimeEntity {
         return this;
     }
 
+    public void changeLikeCount(boolean isIncrease) {
+
+        if (isIncrease) {
+            this.likeCount++;
+        } else {
+            this.likeCount--;
+        }
+
+    }
+
+    public void changeCommentCount(boolean isIncrease) {
+
+        if (isIncrease) {
+            this.commentCount++;
+        } else {
+            this.commentCount--;
+        }
+
+    }
 }

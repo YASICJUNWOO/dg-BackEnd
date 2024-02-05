@@ -10,4 +10,5 @@ import java.util.List;
 
 public interface RecipeCommentRepository extends JpaRepository<RecipeComment, Long> {
     Page<RecipeComment> findAllByRecipe(Recipe recipe, Pageable pageable);
+    boolean deleteAllByMemberId(Long memberId);
 }

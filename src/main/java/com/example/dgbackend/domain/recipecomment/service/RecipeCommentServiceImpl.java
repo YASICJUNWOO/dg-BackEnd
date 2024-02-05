@@ -44,7 +44,11 @@ public class RecipeCommentServiceImpl implements RecipeCommentService {
     @Override
     @Transactional
     public RecipeCommentResponse saveRecipeComment(RecipeCommentVO paramVO) {
-        return RecipeCommentResponse.toResponse(recipeCommentRepository.save(getEntity(paramVO)));
+        RecipeComment save = recipeCommentRepository.save(getEntity(paramVO));
+
+        //댓글 수 증가
+        save.getRecipe().changeCommentCount(true);
+        return RecipeCommentResponse.toResponse(save);
     }
 
     @Override
@@ -91,11 +95,22 @@ public class RecipeCommentServiceImpl implements RecipeCommentService {
     @Override
     @Transactional
     public RecipeCommentResponse deleteRecipeComment(Long recipeCommentId) {
-        RecipeComment recipeComment = getEntityById(recipeCommentId).delete();
+        RecipeComment entityById = getEntityById(recipeCommentId);
+
+        if (!entityById.isState()) {
+            throw new ApiException(ErrorStatus._Already_DELETE_RECIPE_COMMENT);
+        }
+
+        RecipeComment recipeComment = entityById.delete();
 
         //대댓글도 삭제
         recipeComment.getChildCommentList().forEach(RecipeComment::delete);
         return RecipeCommentResponse.toResponse(recipeComment);
     }
 
+    @Override
+    public boolean deleteAllRecipeComment(Long memberId) {
+        recipeCommentRepository.deleteAllByMemberId(memberId);
+        return true;
+    }
 }
