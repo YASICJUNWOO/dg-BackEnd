@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface RecipeService {
 
-    List<RecipeResponse> getExistRecipes();
+    List<RecipeResponse> getExistRecipes(int page);
 
     RecipeResponse getRecipeDetail(Long id);
 

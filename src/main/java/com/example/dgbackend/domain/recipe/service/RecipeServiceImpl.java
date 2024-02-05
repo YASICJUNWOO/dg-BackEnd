@@ -11,6 +11,7 @@ import com.example.dgbackend.global.exception.ApiException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,8 +25,9 @@ public class RecipeServiceImpl implements RecipeService {
     private final MemberService memberService;
 
     @Override
-    public List<RecipeResponse> getExistRecipes() {
-        return recipeRepository.findAllByState(true).stream()
+    public List<RecipeResponse> getExistRecipes(int page) {
+        Pageable pageable = Pageable.ofSize(10).withPage(page);
+        return recipeRepository.findAllByState(true, pageable).stream()
                 .map(RecipeResponse::toResponse)
                 .toList();
     }
