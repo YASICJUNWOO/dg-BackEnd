@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
-
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -33,10 +32,6 @@ public class RecipeController {
 
     //TODO: @AutenticationPrincipal로 변경
 
-    @PostConstruct
-    public void init() {
-        memberRepository.save(member);
-    }
     //Default Member 생성
 
     @Operation(summary = "모든 레시피북 조회", description = "삭제되지 않은 레시피북 목록을 조회합니다.")
@@ -75,24 +70,7 @@ public class RecipeController {
         recipeServiceImpl.deleteRecipe(recipeId);
         return ApiResponse.onSuccess("삭제 완료");
     }
-  
-    @Operation(summary = "내가 작성한 레시피북 조회", description = "특정 회원의 레시피북 목록을 조회합니다.")
-    @GetMapping("/my-page")
-    public ApiResponse<RecipeResponse.RecipeMyPageList> getMyPageList(@RequestParam("name= memberId") Long memberId, @RequestParam Integer page) {
-        return ApiResponse.onSuccess(recipeServiceImpl.getRecipeMyPageList(memberId, page));
-    }
 
-    @Operation(summary = "내가 좋아요한 레시피북 조회", description = "좋아요를 누른 레시피북 목록을 조회합니다.")
-    @GetMapping("/likes")
-    public ApiResponse<RecipeResponse.RecipeMyPageList> getLikeList(@RequestParam("name= memberId") Long memberId, @RequestParam Integer page) {
-        return ApiResponse.onSuccess(recipeServiceImpl.getRecipeLikeList(memberId, page));
-
-    @Operation(summary = "레시피북 검색", description = "레시피북 목록을 검색합니다.")
-    @GetMapping("/search")
-    public ApiResponse<List<RecipeResponse>> findCombinationsListByKeyWord(
-        @RequestParam(name = "page") Integer page, @RequestParam(name = "keyword") String keyword) {
-        return ApiResponse.onSuccess(recipeServiceImpl.findRecipesByKeyword(page, keyword));
-    }
 
     @Operation(summary = "내가 작성한 레시피북 조회", description = "특정 회원의 레시피북 목록을 조회합니다.")
     @GetMapping("/my-page")
