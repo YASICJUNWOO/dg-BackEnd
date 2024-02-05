@@ -4,6 +4,7 @@ import com.example.dgbackend.domain.enums.Gender;
 import com.example.dgbackend.domain.enums.SocialType;
 import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.member.repository.MemberRepository;
+import com.example.dgbackend.domain.recipe.Recipe;
 import com.example.dgbackend.domain.recipe.dto.RecipeRequest;
 import com.example.dgbackend.domain.recipe.dto.RecipeResponse;
 import com.example.dgbackend.domain.recipe.service.RecipeServiceImpl;
@@ -12,6 +13,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,17 +39,12 @@ public class RecipeController {
         memberRepository.save(member);
     }
     //Default Member 생성
-    //TODO: @AutenticationPrincipal로 변경
-    private final MemberRepository memberRepository;
-    private Member member = Member.builder()
-            .name("김동규").email("email@email.com").birthDate("birthDate")
-            .phoneNumber("phoneNumber").nickName("nickName").gender(Gender.MALE).socialType(SocialType.APPLE)
-            .build();
 
     @Operation(summary = "모든 레시피북 조회", description = "삭제되지 않은 레시피북 목록을 조회합니다.")
+    @Parameter(name = "page", description = "페이지 번호, Query Param 입니다.", required = true, example = "0s", in = ParameterIn.QUERY)
     @GetMapping
-    public ApiResponse<List<RecipeResponse>> getRecipes() {
-        return ApiResponse.onSuccess(recipeServiceImpl.getExistRecipes());
+    public ApiResponse<List<RecipeResponse>> getRecipes(@RequestParam("page") int page) {
+        return ApiResponse.onSuccess(recipeServiceImpl.getExistRecipes(page));
     }
 
     @Operation(summary = "레시피북 상세정보 조회", description = "특정 레시피북 정보를 조회합니다.")
