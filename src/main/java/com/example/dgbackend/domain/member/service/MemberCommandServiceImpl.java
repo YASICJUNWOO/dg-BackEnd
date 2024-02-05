@@ -66,8 +66,10 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     //회원 사진 수정
     @Override
     public MemberResponse.GetMember patchProfileImage(Long memberId, MultipartFile multipartFile) {
+
         Member member = memberRepository.findById(memberId)
             .orElseThrow(() -> new ApiException(ErrorStatus._EMPTY_MEMBER));
+
         String originUrl = member.getProfileImageUrl();
 
         if (originUrl != null) {
@@ -83,8 +85,10 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     // 회원 탈퇴
     @Override
     public String patchSignOut(Long memberId) {
+
         Member member = memberRepository.findById(memberId)
             .orElseThrow(() -> new ApiException(ErrorStatus._EMPTY_MEMBER));
+
         member.signout();
 
         combinationCommandService.deleteAllCombination(memberId);
@@ -105,4 +109,6 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     public void saveMember(Member member) {
         memberRepository.save(member);
     }
+  
 }
+
