@@ -41,7 +41,11 @@ public class RecipeCommentServiceImpl implements RecipeCommentService {
     @Override
     @Transactional
     public RecipeCommentResponse saveRecipeComment(RecipeCommentVO paramVO) {
-        return RecipeCommentResponse.toResponse(recipeCommentRepository.save(getEntity(paramVO)));
+        RecipeComment save = recipeCommentRepository.save(getEntity(paramVO));
+
+        //댓글 수 증가
+        save.getRecipe().changeCommentCount(true);
+        return RecipeCommentResponse.toResponse(save);
     }
 
     @Override
