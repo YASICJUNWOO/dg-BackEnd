@@ -12,7 +12,14 @@ import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+import static com.example.dgbackend.domain.recipe.dto.RecipeResponse.toRecipeMyPageList;
+
 
 @Service
 @RequiredArgsConstructor
@@ -94,6 +101,28 @@ public class RecipeServiceImpl implements RecipeService {
         return recipeRepository.findRecipesByNameContaining(keyword).stream()
             .map(RecipeResponse::toResponse)
             .toList();
+    }
+
+    @Override
+    public RecipeResponse.RecipeMyPageList getRecipeMyPageList(Long memberId, Integer page) {
+        Page<Recipe> recipePage = recipeRepository.findAllByMemberId(memberId, PageRequest.of(page, 9));
+
+
+        return toRecipeMyPageList(recipePage);
+    }
+
+    @Override
+    public RecipeResponse.RecipeMyPageList getRecipeLikeList(Long memberId, Integer page) {
+        Page<Recipe> recipePage = recipeRepository.findRecipesByMemberId(memberId, PageRequest.of(page, 9));
+
+        return toRecipeMyPageList(recipePage);
+    }
+
+    @Override
+    public boolean deleteAllRecipe(Long memberId) {
+        recipeRepository.deleteAllByMemberId(memberId);
+
+        return true;
     }
 
 }

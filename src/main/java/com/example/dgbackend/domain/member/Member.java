@@ -26,7 +26,7 @@ public class Member extends BaseTimeEntity {
     @NotNull
     private String email;
 
-    @NotNull
+
     private String birthDate; //생일은 String으로 받도록 하였습니다.
 
     @NotNull
@@ -90,5 +90,24 @@ public class Member extends BaseTimeEntity {
      */
     public void setDrinkingLimit(String drinkingLimit) {
         this.drinkingLimit = drinkingLimit;
+    }
+
+    public Member update (String name, String nickName, String birthDate, String phoneNumber,  Gender gender) {
+        this.name = name;
+        this.nickName = nickName;
+        this.birthDate = birthDate;
+        this.phoneNumber = phoneNumber;
+        this.gender = gender;
+
+        return this;
+    }
+
+    public String updateProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
+        return profileImageUrl;
+    }
+
+    public void signout() {
+        this.state = false;
     }
 }

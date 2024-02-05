@@ -26,6 +26,11 @@ public interface RecipeService {
 
     void isAlreadyCreate(String RecipeName, String memberName);
 
-    List<RecipeResponse> findRecipesByKeyword(Integer page, String keyword);
+    RecipeResponse.RecipeMyPageList getRecipeMyPageList(Long memberId, Integer Page);
 
+    RecipeResponse.RecipeMyPageList getRecipeLikeList(Long memberId, Integer Page);
+
+    boolean deleteAllRecipe(Long memberId);
+
+    List<RecipeResponse> findRecipesByKeyword(Integer page, String keyword);
 }

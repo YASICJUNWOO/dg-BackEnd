@@ -1,12 +1,6 @@
 package com.example.dgbackend.domain.combination.service;
 
-import static com.example.dgbackend.domain.combination.dto.CombinationResponse.CombinationDetailResult;
-import static com.example.dgbackend.domain.combination.dto.CombinationResponse.CombinationEditResult;
-import static com.example.dgbackend.domain.combination.dto.CombinationResponse.CombinationPreviewResultList;
-import static com.example.dgbackend.domain.combination.dto.CombinationResponse.CombinationResult;
-import static com.example.dgbackend.domain.combination.dto.CombinationResponse.toCombinationDetailResult;
-import static com.example.dgbackend.domain.combination.dto.CombinationResponse.toCombinationPreviewResultList;
-import static com.example.dgbackend.domain.combination.dto.CombinationResponse.toCombinationResult;
+import static com.example.dgbackend.domain.combination.dto.CombinationResponse.*;
 import static com.example.dgbackend.domain.combinationcomment.dto.CombinationCommentResponse.CommentPreViewResult;
 import static com.example.dgbackend.domain.member.dto.MemberResponse.toMemberResult;
 
@@ -125,6 +119,16 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
         );
     }
 
+    /*
+     * 내가 작성한 오늘의 조합 조회
+     */
+    @Override
+    public CombinationResponse.CombinationMyPageList getCombinationMyPageList(Long memberId, Integer page) {
+        Page<Combination> combinations = combinationRepository.findAllByMemberId(memberId, PageRequest.of(page, 9));
+
+        return toCombinationMyPageList(combinations);
+    }
+
     @Override
     public CombinationPreviewResultList getWeeklyBestCombinationPreviewResultList(Integer page) {
         PageRequest pageRequest = PageRequest.of(page, 10);
@@ -139,6 +143,14 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
         return toCombinationPreviewResultList(combinations, hashTagOptionList);
     }
 
+    @Override
+    public CombinationMyPageList getCombinationLikeList(Long memberId, Integer page) {
+        Page<Combination> combinations = combinationRepository.findCombinationsByMemberId(memberId, PageRequest.of(page, 9));
+
+        return toCombinationMyPageList(combinations);
+    }
+  
+  
     @Override
     public CombinationPreviewResultList findCombinationsListByKeyword(Integer page,
         String keyword) {
@@ -170,5 +182,5 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
 
         return toCombinationPreviewResultList(combinations, hashTagOptionList);
     }
-
 }
+
