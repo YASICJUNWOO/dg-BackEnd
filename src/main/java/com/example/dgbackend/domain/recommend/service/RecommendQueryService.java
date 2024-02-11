@@ -4,18 +4,16 @@ import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.recommend.Recommend;
 import com.example.dgbackend.domain.recommend.dto.RecommendRequest;
 import com.example.dgbackend.domain.recommend.dto.RecommendResponse;
-
-import static com.example.dgbackend.domain.recommend.dto.RecommendResponse.RecommendResult;
+import com.example.dgbackend.domain.recommend.dto.RecommendResponse.RecommendResponseDTO;
 
 public interface RecommendQueryService {
 
     void addRecommend(Member member, RecommendRequest.RecommendRequestDTO recommendRequestDTO, String drinkName, String drinkInfo, String imageUrl);
 
+    RecommendResponseDTO getRecommendResult(Long recommendId);
     Recommend getRecommend(Long recommendId);
 
-    RecommendResult getRecommendResult(Long recommendId);
+    RecommendResponse.RecommendListResult getRecommendListResult(Member member, Integer page, Integer size);
 
-    RecommendResponse.RecommendListResult getRecommendListResult(Long memberID, Integer page, Integer size);
-
-    RecommendResult deleteRecommend(Long recommendId);          //추천 삭제
+    RecommendResponseDTO deleteRecommend(Long recommendId);          //추천 삭제
 }
