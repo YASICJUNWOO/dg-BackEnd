@@ -24,13 +24,12 @@ public interface CombinationQueryService {
 
     Boolean isCombinationOwner(Long combinationId, Member member);
 
-    CombinationMyPageList getCombinationMyPageList(Long memberId, Integer page);
+    CombinationMyPageList getCombinationMyPageList(Member member, Integer page);
 
     CombinationPreviewResultList getWeeklyBestCombinationPreviewResultList(Member loginMember,
         Integer page);
 
-
-    CombinationMyPageList getCombinationLikeList(Long memberId, Integer page);
+    CombinationMyPageList getCombinationLikeList(Member member, Integer page);
 
     CombinationPreviewResultList findCombinationsListByKeyword(Member loginMember, Integer page,
         String keyword);
@@ -38,6 +37,4 @@ public interface CombinationQueryService {
     CombinationPreviewResultList findWeeklyBestCombinationsListByKeyWord(Member loginMember,
         Integer page,
         String keyword);
-
-
 }

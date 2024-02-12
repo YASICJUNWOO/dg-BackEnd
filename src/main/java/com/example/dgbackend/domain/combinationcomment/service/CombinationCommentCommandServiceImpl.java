@@ -82,15 +82,4 @@ public class CombinationCommentCommandServiceImpl implements CombinationCommentC
         return toCommentResult(combinationComment);
     }
 
-    @Override
-    public boolean deleteAllComment(Long memberId) {
-        List<CombinationComment> combinationComments = combinationCommentRepository.findAllByMemberId(
-            memberId);
-
-        for (CombinationComment combinationComment : combinationComments) {
-            combinationComment.deleteComment();
-        }
-
-        return true;
-    }
 }
