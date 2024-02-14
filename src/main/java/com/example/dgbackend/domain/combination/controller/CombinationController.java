@@ -129,8 +129,10 @@ public class CombinationController {
     })
     @Parameter(name = "page", description = "내가 작성한 오늘의 조합 목록 페이지 번호, query string 입니다.")
     @GetMapping("/my-page")
-    public ApiResponse<CombinationResponse.CombinationMyPageList> getMyPageCombinations(@MemberObject Member member, @CheckPage @RequestParam(name = "page") Integer page) {
-        return ApiResponse.onSuccess(combinationQueryService.getCombinationMyPageList(member, page));
+    public ApiResponse<CombinationResponse.CombinationMyPageList> getMyPageCombinations(
+        @MemberObject Member member, @CheckPage @RequestParam(name = "page") Integer page) {
+        return ApiResponse.onSuccess(
+            combinationQueryService.getCombinationMyPageList(member, page));
     }
 
     @Operation(summary = "주간 베스트 조합 조회", description = "주간 베스트 조합 목록을 조회합니다.")
@@ -149,7 +151,8 @@ public class CombinationController {
     })
     @Parameter(name = "page", description = "내가 좋아요 누른 오늘의 조합 목록 페이지 번호, query string 입니다.")
     @GetMapping("/likes")
-    public ApiResponse<CombinationResponse.CombinationMyPageList> getLikeCombinations(@MemberObject Member member, @CheckPage @RequestParam(name = "page") Integer page) {
+    public ApiResponse<CombinationResponse.CombinationMyPageList> getLikeCombinations(
+        @MemberObject Member member, @CheckPage @RequestParam(name = "page") Integer page) {
         return ApiResponse.onSuccess(combinationQueryService.getCombinationLikeList(member, page));
     }
 
@@ -185,6 +188,23 @@ public class CombinationController {
 
         CombinationResponse.CombinationMainPreviewList combinationMainPreviewList =
                 combinationScheduler.getMainTodayCombinationList();
+
+        return ApiResponse.onSuccess(combinationMainPreviewList);
+
+    }
+
+    @Operation(summary = "메인 주간 베스트 조합 조회", description = "메인페이지 상단에 띄울 랜덤 주간 베스트 조합 목록을 조회합니다.")
+    @GetMapping("/main/weekly-best")
+    public ApiResponse<CombinationResponse.CombinationMainList> getRandomMain() {
+        return ApiResponse.onSuccess(combinationScheduler.getMainRandomCombinationList());
+    }
+
+    @Operation(summary = "메인 오늘의 조합 로테이션 조회", description = "메인에 표시될 오늘의 조합 랜덤 3개를 조회합니다.")
+    @GetMapping("/main/rotation")
+    public ApiResponse<CombinationResponse.CombinationMainPreviewList> getMainRotation() {
+
+        CombinationResponse.CombinationMainPreviewList combinationMainPreviewList =
+            combinationScheduler.getMainTodayCombinationList();
 
         return ApiResponse.onSuccess(combinationMainPreviewList);
 
