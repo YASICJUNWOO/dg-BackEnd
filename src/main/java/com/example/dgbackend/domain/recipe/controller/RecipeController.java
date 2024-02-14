@@ -97,11 +97,11 @@ public class RecipeController {
         return ApiResponse.onSuccess(recipeServiceImpl.findRecipesByKeyword(page, keyword));
     }
 
-
     @Operation(summary = "메인 레시피북 조회", description = "메인에 띄울 레시피북을 조회합니다.")
     @GetMapping("/main")
     public ApiResponse<RecipeResponse.RecipeMainList> getMainRecipeList() {
         return ApiResponse.onSuccess(recipeScheduler.getMainTodayRecipeList());
     }
+
 }
 

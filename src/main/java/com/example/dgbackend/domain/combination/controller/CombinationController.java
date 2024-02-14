@@ -170,7 +170,7 @@ public class CombinationController {
         return ApiResponse.onSuccess(
             combinationQueryService.findWeeklyBestCombinationsListByKeyWord(loginMember, page,
                 keyword));
-    }
+
 
     @Operation(summary = "메인 주간 베스트 조합 조회", description = "메인페이지 상단에 띄울 랜덤 주간 베스트 조합 목록을 조회합니다.")
     @GetMapping("/main/weekly-best")
@@ -187,5 +187,6 @@ public class CombinationController {
                 combinationScheduler.getMainTodayCombinationList();
 
         return ApiResponse.onSuccess(combinationMainPreviewList);
+
     }
 }

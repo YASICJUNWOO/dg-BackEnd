@@ -1,6 +1,14 @@
 package com.example.dgbackend.domain.combination.service;
 
-import static com.example.dgbackend.domain.combination.dto.CombinationResponse.*;
+import static com.example.dgbackend.domain.combination.dto.CombinationResponse.CombinationDetailResult;
+import static com.example.dgbackend.domain.combination.dto.CombinationResponse.CombinationEditResult;
+import static com.example.dgbackend.domain.combination.dto.CombinationResponse.CombinationMyPageList;
+import static com.example.dgbackend.domain.combination.dto.CombinationResponse.CombinationPreviewResultList;
+import static com.example.dgbackend.domain.combination.dto.CombinationResponse.CombinationResult;
+import static com.example.dgbackend.domain.combination.dto.CombinationResponse.toCombinationDetailResult;
+import static com.example.dgbackend.domain.combination.dto.CombinationResponse.toCombinationMyPageList;
+import static com.example.dgbackend.domain.combination.dto.CombinationResponse.toCombinationPreviewResultList;
+import static com.example.dgbackend.domain.combination.dto.CombinationResponse.toCombinationResult;
 import static com.example.dgbackend.domain.combinationcomment.dto.CombinationCommentResponse.CommentPreViewResult;
 import static com.example.dgbackend.domain.member.dto.MemberResponse.toMemberResult;
 
@@ -216,6 +224,7 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
         List<Boolean> isLikeList = combinationList.stream()
                 .map(cb -> combinationLikeQueryService.isCombinationLike(cb, loginMember))
                 .toList();
+
 
         return toCombinationPreviewResultList(combinations, hashTagOptionList, isLikeList);
     }
