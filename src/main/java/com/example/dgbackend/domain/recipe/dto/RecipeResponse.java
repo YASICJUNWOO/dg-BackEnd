@@ -2,6 +2,7 @@ package com.example.dgbackend.domain.recipe.dto;
 
 import com.example.dgbackend.domain.recipe.Recipe;
 import com.example.dgbackend.domain.recipeimage.RecipeImage;
+import com.example.dgbackend.domain.recipeimage.dto.RecipeImageResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -64,6 +65,38 @@ public class RecipeResponse {
     @Schema(description = "작성자 이름", example = "김동규")
     private String memberName;
 
+    @Schema(description = "레시피 이미지 목록")
+    private List<String> recipeImageList;
+
+    @Builder
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class RecipeResponseList {
+        List<RecipeResponse> recipeList;
+        Integer listSize;
+        Integer totalPage;
+        Long totalElements;
+        Boolean isFirst;
+        Boolean isLast;
+    }
+
+    public static RecipeResponseList toRecipeResponseList(Page<Recipe> recipes) {
+        List<RecipeResponse> recipeResponses = recipes.getContent()
+                .stream()
+                .map(RecipeResponse::toResponse)
+                .collect(Collectors.toList());
+
+        return RecipeResponseList.builder()
+                .recipeList(recipeResponses)
+                .listSize(recipeResponses.size())
+                .totalPage(recipes.getTotalPages())
+                .totalElements(recipes.getTotalElements())
+                .isFirst(recipes.isFirst())
+                .isLast(recipes.isLast())
+                .build();
+    }
+
     public static RecipeResponse toResponse(Recipe recipe) {
         return RecipeResponse.builder()
                 .id(recipe.getId())
@@ -78,6 +111,7 @@ public class RecipeResponse {
                 .recommendCombination(recipe.getRecommendCombination())
                 .state(recipe.isState())
                 .memberName(recipe.getMember().getName())
+                .recipeImageList(RecipeImageResponse.toStringResponse(recipe.getRecipeImageList()))
                 .build();
     }
 
@@ -133,6 +167,56 @@ public class RecipeResponse {
         return RecipeMyPage.builder()
                 .id(recipe.getId())
                 .name(recipe.getName())
+                .recipeImageUrl(imageUrl)
+                .build();
+    }
+
+    @Builder
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class RecipeMain {
+        private Long id;
+        private String recipeName;
+        private String cookingTime;
+        private String ingredient;
+        private String recipeImageUrl;
+    }
+
+    @Builder
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class RecipeMainList {
+        List<RecipeMain> recipeList;
+    }
+
+    public static RecipeMainList toRecipeMainList(List<Recipe> recipes, List<RecipeImage> imgList) {
+
+        List<RecipeMain> recipeMains = recipes
+                .stream()
+                .map(rc -> toRecipeMain(rc, imgList))
+                .collect(Collectors.toList());
+
+        return RecipeResponse.RecipeMainList.builder()
+                .recipeList(recipeMains)
+                .build();
+    }
+
+
+    public static RecipeMain toRecipeMain(Recipe recipe, List<RecipeImage> imgList) {
+        // TODO: 대표 이미지 정하기
+        String imageUrl = imgList.stream()
+                .filter(img -> img != null && img.getRecipe().getId().equals(recipe.getId()))
+                .findAny()  // 이미지 중 첫 번째 것만 가져옴
+                .map(img -> img.getImageUrl())
+                .orElse(null);  // 만약 이미지가 없다면 null 반환
+
+        return RecipeMain.builder()
+                .id(recipe.getId())
+                .recipeName(recipe.getName())
+                .cookingTime(recipe.getCookingTime())
+                .ingredient(recipe.getIngredient())
                 .recipeImageUrl(imageUrl)
                 .build();
     }
