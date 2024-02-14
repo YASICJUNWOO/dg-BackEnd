@@ -68,37 +68,6 @@ public class RecipeResponse {
     @Schema(description = "레시피 이미지 목록")
     private List<String> recipeImageList;
 
-    @Builder
-    @Getter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class RecipeResponseList {
-        List<RecipeResponse> recipeList;
-        Integer listSize;
-        Integer totalPage;
-        Long totalElements;
-        Boolean isFirst;
-        Boolean isLast;
-    }
-
-    public static RecipeResponseList toRecipeResponseList(Page<Recipe> recipes) {
-        List<RecipeResponse> recipeResponses = recipes.getContent()
-                .stream()
-                .map(RecipeResponse::toResponse)
-                .collect(Collectors.toList());
-
-        return RecipeResponseList.builder()
-                .recipeList(recipeResponses)
-                .listSize(recipeResponses.size())
-                .totalPage(recipes.getTotalPages())
-                .totalElements(recipes.getTotalElements())
-                .isFirst(recipes.isFirst())
-                .isLast(recipes.isLast())
-                .build();
-    }
-
-    @Schema(description = "레시피 이미지 목록")
-    private List<String> recipeImageList;
 
     @Builder
     @Getter
