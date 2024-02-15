@@ -68,6 +68,9 @@ public class RecipeResponse {
     @Schema(description = "레시피 이미지 목록")
     private List<String> recipeImageList;
 
+    @Schema(description = "해시태그 리스트", example = "[김치찌개, 참이슬]")
+    private List<String> hashTagNameList;
+
 
     @Builder
     @Getter
