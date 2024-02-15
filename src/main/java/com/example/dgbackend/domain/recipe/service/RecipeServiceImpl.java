@@ -68,7 +68,10 @@ public class RecipeServiceImpl implements RecipeService {
     @Transactional
     public RecipeResponse updateRecipe(Long id, RecipeRequest recipeRequest) {
         Recipe recipe = getRecipe(id);
-        isAlreadyCreate(recipeRequest.getName(), recipe.getMember().getName());
+
+        //해시태그 저장
+        List<RecipeHashTag> hashTags = recipeHashTagService.uploadRecipeHashTag(recipe, recipeRequest.getHashTagNameList());
+        recipe.setHashTagList(hashTags);
         return RecipeResponse.toResponse(recipe.update(recipeRequest));
     }
 

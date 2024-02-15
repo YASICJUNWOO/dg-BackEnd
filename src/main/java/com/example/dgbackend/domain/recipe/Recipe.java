@@ -103,7 +103,7 @@ public class Recipe extends BaseTimeEntity {
     }
 
     public void setHashTagList(List<RecipeHashTag> recipeHashTagList) {
-        this.recipeHashTagList.addAll(recipeHashTagList);
+        this.recipeHashTagList = new HashSet<>(recipeHashTagList);
     }
 
 }
