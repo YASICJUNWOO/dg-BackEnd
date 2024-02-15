@@ -1,6 +1,7 @@
 package com.example.dgbackend.domain.recipe.dto;
 
 import com.example.dgbackend.domain.recipe.Recipe;
+import com.example.dgbackend.domain.recipe_hashtag.dto.RecipeHashTagResponse;
 import com.example.dgbackend.domain.recipeimage.RecipeImage;
 import com.example.dgbackend.domain.recipeimage.dto.RecipeImageResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -116,6 +117,7 @@ public class RecipeResponse {
                 .state(recipe.isState())
                 .memberNickName(recipe.getMember().getNickName())
                 .recipeImageList(RecipeImageResponse.toStringResponse(recipe.getRecipeImageList()))
+                .hashTagNameList(RecipeHashTagResponse.toStringResponse(recipe.getRecipeHashTagList()))
                 .build();
     }
 
