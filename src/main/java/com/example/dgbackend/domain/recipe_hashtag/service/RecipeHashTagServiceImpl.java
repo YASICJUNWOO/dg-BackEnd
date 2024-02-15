@@ -34,7 +34,9 @@ public class RecipeHashTagServiceImpl implements RecipeHashTagService {
                             .hashtag(hashTag)
                             .build();
 
-                    return recipeHashTagRepository.save(recipeHashTag);
+                    //있으면 그대로 반환, 없으면 저장 후 반환
+                    return recipeHashTagRepository.findByRecipe_IdAndHashtag_Id(recipe.getId(), hashTag.getId())
+                            .orElseGet(() -> recipeHashTagRepository.save(recipeHashTag));
                 })
                 .toList();
     }
