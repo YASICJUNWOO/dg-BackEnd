@@ -55,6 +55,7 @@ public class Recipe extends BaseTimeEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @Builder.Default
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     private List<RecipeImage> recipeImageList = new ArrayList<>();
 
