@@ -10,7 +10,9 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @AllArgsConstructor
@@ -56,12 +58,13 @@ public class Recipe extends BaseTimeEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @Builder.Default
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     private List<RecipeImage> recipeImageList = new ArrayList<>();
 
     @Builder.Default
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
-    private List<RecipeHashTag> recipeHashTagList = new ArrayList<>();
+    private Set<RecipeHashTag> recipeHashTagList = new HashSet<>();
 
     public Recipe update(RecipeRequest recipeResponseDto) {
         this.name = recipeResponseDto.getName();
@@ -98,4 +101,9 @@ public class Recipe extends BaseTimeEntity {
         }
 
     }
+
+    public void setHashTagList(List<RecipeHashTag> recipeHashTagList) {
+        this.recipeHashTagList.addAll(recipeHashTagList);
+    }
+
 }
