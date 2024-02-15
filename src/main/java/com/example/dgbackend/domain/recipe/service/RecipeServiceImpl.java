@@ -79,6 +79,7 @@ public class RecipeServiceImpl implements RecipeService {
     @Transactional
     public void deleteRecipe(Long id) {
         getRecipe(id).delete();
+        recipeHashTagService.deleteRecipeHashTag(id);
     }
 
     //레시피 이름과 회원 이름으로 레시피 탐색

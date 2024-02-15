@@ -10,4 +10,6 @@ public interface RecipeHashTagService {
 
     List<RecipeHashTag> uploadRecipeHashTag(Recipe recipe, List<String> hashTagName);
 
+    void deleteRecipeHashTag(Long recipeId);
+
 }

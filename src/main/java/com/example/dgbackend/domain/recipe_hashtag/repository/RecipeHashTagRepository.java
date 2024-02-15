@@ -10,4 +10,6 @@ public interface RecipeHashTagRepository extends JpaRepository<RecipeHashTag, Lo
 
     Optional<RecipeHashTag> findByRecipe_IdAndHashtag_Id(Long recipeId, Long hashtagId);
 
+    void deleteByRecipe_Id(Long recipeId);
+
 }

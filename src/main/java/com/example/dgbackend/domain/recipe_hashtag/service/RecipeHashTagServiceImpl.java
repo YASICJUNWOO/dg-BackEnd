@@ -41,4 +41,9 @@ public class RecipeHashTagServiceImpl implements RecipeHashTagService {
                 .toList();
     }
 
+    @Override
+    public void deleteRecipeHashTag(Long recipeId) {
+        recipeHashTagRepository.deleteByRecipe_Id(recipeId);
+    }
+
 }
