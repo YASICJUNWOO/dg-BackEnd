@@ -2,6 +2,7 @@ package com.example.dgbackend.domain.recipe;
 
 import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.recipe.dto.RecipeRequest;
+import com.example.dgbackend.domain.recipe_hashtag.RecipeHashTag;
 import com.example.dgbackend.domain.recipeimage.RecipeImage;
 import com.example.dgbackend.global.common.BaseTimeEntity;
 import jakarta.persistence.*;
@@ -57,6 +58,10 @@ public class Recipe extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     private List<RecipeImage> recipeImageList = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
+    private List<RecipeHashTag> recipeHashTagList = new ArrayList<>();
 
     public Recipe update(RecipeRequest recipeResponseDto) {
         this.name = recipeResponseDto.getName();
