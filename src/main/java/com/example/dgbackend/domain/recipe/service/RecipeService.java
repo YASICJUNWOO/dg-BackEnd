@@ -33,4 +33,5 @@ public interface RecipeService {
     RecipeResponse.RecipeResponseList findRecipesByKeyword(Integer page, String keyword, Member member);
 
     RecipeResponse getRecipeDetailResponse(Recipe recipes, Member member);
+
 }
