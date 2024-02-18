@@ -7,11 +7,6 @@ import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.member.dto.MemberRequest;
 import com.example.dgbackend.domain.member.dto.MemberResponse;
 import com.example.dgbackend.domain.member.repository.MemberRepository;
-import com.example.dgbackend.domain.recipe.service.RecipeService;
-import com.example.dgbackend.domain.recipecomment.service.RecipeCommentService;
-import com.example.dgbackend.domain.recipelike.service.RecipeLikeService;
-import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
-import com.example.dgbackend.global.exception.ApiException;
 import com.example.dgbackend.global.s3.S3Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +26,6 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     private final CombinationCommandService combinationCommandService;
     private final CombinationCommentCommandService combinationCommentCommandService;
     private final CombinationLikeCommandService combinationLikeCommandService;
-    private final RecipeService recipeCommandService;
-    private final RecipeCommentService recipeCommentService;
-    private final RecipeLikeService recipeLikeCommandService;
 
     @Override
     public MemberResponse.RecommendInfoDTO patchRecommendInfo(Member member,

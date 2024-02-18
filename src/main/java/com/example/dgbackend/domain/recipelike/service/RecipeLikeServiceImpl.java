@@ -1,14 +1,14 @@
 package com.example.dgbackend.domain.recipelike.service;
 
 import com.example.dgbackend.domain.member.Member;
-import com.example.dgbackend.domain.member.service.MemberService;
 import com.example.dgbackend.domain.recipe.Recipe;
-import com.example.dgbackend.domain.recipe.service.RecipeServiceImpl;
+import com.example.dgbackend.domain.recipe.repository.RecipeRepository;
 import com.example.dgbackend.domain.recipelike.RecipeLike;
 import com.example.dgbackend.domain.recipelike.dto.RecipeLikeRequest;
 import com.example.dgbackend.domain.recipelike.dto.RecipeLikeResponse;
-import com.example.dgbackend.domain.recipelike.dto.RecipeLikeVO;
 import com.example.dgbackend.domain.recipelike.repository.RecipeLikeRepository;
+import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
+import com.example.dgbackend.global.exception.ApiException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,8 +20,7 @@ import java.util.Optional;
 public class RecipeLikeServiceImpl implements RecipeLikeService {
 
     private final RecipeLikeRepository recipeLikeRepository;
-    private final RecipeServiceImpl recipeServiceImpl;
-    private final MemberService memberService;
+    private final RecipeRepository recipeRepository;
 
     @Override
     public RecipeLikeResponse getRecipeLike(Long recipeId, Member member) {
@@ -50,7 +49,7 @@ public class RecipeLikeServiceImpl implements RecipeLikeService {
     @Override
     @Transactional
     public RecipeLike createRecipe(Long recipeId, Member member) {
-        Recipe recipe = recipeServiceImpl.getRecipe(recipeId);
+        Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(() -> new ApiException(ErrorStatus._EMPTY_RECIPE));
 
         //레시피 좋아요 엔티티 생성 ㅎ  증가
         RecipeLike save = recipeLikeRepository.save(RecipeLikeRequest.toEntity(recipe, member));
@@ -62,7 +61,7 @@ public class RecipeLikeServiceImpl implements RecipeLikeService {
     //레시피 id와 멤버 이름으로 레시피 좋아요 엔티티를 조회
     @Override
     public Optional<RecipeLike> getRecipeLikeEntity(Long recipeId, Member member) {
-        Recipe recipe = recipeServiceImpl.getRecipe(recipeId);
+        Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(() -> new ApiException(ErrorStatus._EMPTY_RECIPE));
         return recipeLikeRepository.findByRecipeAndMember(recipe, member);
     }
 }
