@@ -24,9 +24,9 @@ public class RecipeLikeServiceImpl implements RecipeLikeService {
     private final MemberService memberService;
 
     @Override
-    public RecipeLikeResponse getRecipeLike(RecipeLikeVO recipeLikeVO) {
+    public RecipeLikeResponse getRecipeLike(Long recipeId, Member member) {
 
-        Optional<RecipeLike> recipeLike = getRecipeLikeEntity(recipeLikeVO);
+        Optional<RecipeLike> recipeLike = getRecipeLikeEntity(recipeId, member);
 
         //레시피 좋아요 엔티티가 존재하면 해당 엔티티의 state를 반환
         //존재하지 않으면 false를 반환
@@ -36,22 +36,21 @@ public class RecipeLikeServiceImpl implements RecipeLikeService {
 
     @Override
     @Transactional
-    public RecipeLikeResponse changeRecipeLike(RecipeLikeVO recipeLikeVO) {
+    public RecipeLikeResponse changeRecipeLike(Long recipeId, Member member) {
 
-        Optional<RecipeLike> recipeLike = getRecipeLikeEntity(recipeLikeVO);
+        Optional<RecipeLike> recipeLike = getRecipeLikeEntity(recipeId, member);
 
         //있으면 변경, 없으면 만들어서 저장
         RecipeLike savedRecipeLike = recipeLike.map(RecipeLike::changeState)
-                .orElseGet(() -> createRecipe(recipeLikeVO));
+                .orElseGet(() -> createRecipe(recipeId, member));
 
         return RecipeLikeResponse.toResponseByEntity(savedRecipeLike);
     }
 
     @Override
     @Transactional
-    public RecipeLike createRecipe(RecipeLikeVO recipeLikeVO) {
-        Recipe recipe = recipeServiceImpl.getRecipe(recipeLikeVO.getRecipeId());
-        Member member = memberService.findMemberByName(recipeLikeVO.getMemberName());
+    public RecipeLike createRecipe(Long recipeId, Member member) {
+        Recipe recipe = recipeServiceImpl.getRecipe(recipeId);
 
         //레시피 좋아요 엔티티 생성 ㅎ  증가
         RecipeLike save = recipeLikeRepository.save(RecipeLikeRequest.toEntity(recipe, member));
@@ -62,9 +61,8 @@ public class RecipeLikeServiceImpl implements RecipeLikeService {
 
     //레시피 id와 멤버 이름으로 레시피 좋아요 엔티티를 조회
     @Override
-    public Optional<RecipeLike> getRecipeLikeEntity(RecipeLikeVO recipeLikeVO) {
-        Recipe recipe = recipeServiceImpl.getRecipe(recipeLikeVO.getRecipeId());
-        Member memberByName = memberService.findMemberByName(recipeLikeVO.getMemberName());
-        return recipeLikeRepository.findByRecipeAndMember(recipe, memberByName);
+    public Optional<RecipeLike> getRecipeLikeEntity(Long recipeId, Member member) {
+        Recipe recipe = recipeServiceImpl.getRecipe(recipeId);
+        return recipeLikeRepository.findByRecipeAndMember(recipe, member);
     }
 }

@@ -1,5 +1,6 @@
 package com.example.dgbackend.domain.recipelike.service;
 
+import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.recipelike.RecipeLike;
 import com.example.dgbackend.domain.recipelike.dto.RecipeLikeResponse;
 import com.example.dgbackend.domain.recipelike.dto.RecipeLikeVO;
@@ -8,11 +9,11 @@ import java.util.Optional;
 
 public interface RecipeLikeService {
 
-    RecipeLikeResponse getRecipeLike(RecipeLikeVO recipeLikeVO);
+    RecipeLikeResponse getRecipeLike(Long recipeId, Member member);
 
-    RecipeLikeResponse changeRecipeLike(RecipeLikeVO recipeLikeVO);
+    RecipeLikeResponse changeRecipeLike(Long recipeId, Member member);
 
-    RecipeLike createRecipe(RecipeLikeVO recipeLikeVO);
+    RecipeLike createRecipe(Long recipeId, Member member);
 
-    Optional<RecipeLike> getRecipeLikeEntity(RecipeLikeVO recipeLikeVO);
+    Optional<RecipeLike> getRecipeLikeEntity(Long recipeId, Member member);
 }
