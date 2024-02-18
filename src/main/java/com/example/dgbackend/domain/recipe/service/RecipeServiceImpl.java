@@ -8,6 +8,7 @@ import com.example.dgbackend.domain.recipe.dto.RecipeResponse;
 import com.example.dgbackend.domain.recipe.repository.RecipeRepository;
 import com.example.dgbackend.domain.recipe_hashtag.RecipeHashTag;
 import com.example.dgbackend.domain.recipe_hashtag.service.RecipeHashTagService;
+import com.example.dgbackend.domain.recipelike.service.RecipeLikeService;
 import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
 import com.example.dgbackend.global.exception.ApiException;
 import jakarta.transaction.Transactional;
@@ -31,6 +32,7 @@ public class RecipeServiceImpl implements RecipeService {
     private final RecipeRepository recipeRepository;
     private final MemberService memberService;
     private final RecipeHashTagService recipeHashTagService;
+    private final RecipeLikeService recipeLikeService;
 
     @Override
     public RecipeResponse.RecipeResponseList getExistRecipes(int page) {
@@ -43,6 +45,15 @@ public class RecipeServiceImpl implements RecipeService {
     public RecipeResponse getRecipeDetail(Long id) {
         Recipe recipe = getRecipe(id);
         return RecipeResponse.toResponse(recipe);
+    }
+
+    //like 상태를 추가 (좋아요 누른 상태인지 확인)
+    @Override
+    public RecipeResponse getRecipeDetailResponse(Recipe recipes, Member member) {
+
+        boolean state = recipeLikeService.getRecipeLike(recipes.getId(), member).isState();
+
+        return RecipeResponse.toResponse(recipes, state);
     }
 
     @Override
