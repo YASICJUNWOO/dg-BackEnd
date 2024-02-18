@@ -68,6 +68,9 @@ public class RecipeResponse {
     @Schema(description = "해시태그 리스트", example = "[김치찌개, 참이슬]")
     private List<String> hashTagNameList;
 
+    @Schema(description = "좋아요 여부", example = "true")
+    private boolean isLike;
+
 
     @Builder
     @Getter
@@ -82,12 +85,7 @@ public class RecipeResponse {
         Boolean isLast;
     }
 
-    public static RecipeResponseList toRecipeResponseList(Page<Recipe> recipes) {
-        List<RecipeResponse> recipeResponses = recipes.getContent()
-                .stream()
-                .map(RecipeResponse::toResponse)
-                .collect(Collectors.toList());
-
+    public static RecipeResponseList toRecipeResponseList(Page<Recipe> recipes, List<RecipeResponse> recipeResponses) {
         return RecipeResponseList.builder()
                 .recipeList(recipeResponses)
                 .listSize(recipeResponses.size())
@@ -98,7 +96,7 @@ public class RecipeResponse {
                 .build();
     }
 
-    public static RecipeResponse toResponse(Recipe recipe) {
+    public static RecipeResponse toResponse(Recipe recipe, boolean isLike) {
         return RecipeResponse.builder()
                 .id(recipe.getId())
                 .title(recipe.getTitle())
@@ -113,6 +111,7 @@ public class RecipeResponse {
                 .memberNickName(recipe.getMember().getNickName())
                 .recipeImageList(RecipeImageResponse.toStringResponse(recipe.getRecipeImageList()))
                 .hashTagNameList(RecipeHashTagResponse.toStringResponse(recipe.getRecipeHashTagList()))
+                .isLike(isLike)
                 .build();
     }
 

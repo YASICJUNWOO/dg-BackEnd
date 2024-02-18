@@ -39,15 +39,17 @@ public class RecipeController {
     @Operation(summary = "모든 레시피북 조회", description = "삭제되지 않은 레시피북 목록을 조회합니다.")
     @Parameter(name = "page", description = "페이지 번호, Query Param 입니다.", required = true, example = "0s", in = ParameterIn.QUERY)
     @GetMapping
-    public ApiResponse<RecipeResponse.RecipeResponseList> getRecipes(@RequestParam("page") int page) {
-        return ApiResponse.onSuccess(recipeServiceImpl.getExistRecipes(page));
+    public ApiResponse<RecipeResponse.RecipeResponseList> getRecipes(@RequestParam("page") int page,
+                                                                     @MemberObject Member member) {
+        return ApiResponse.onSuccess(recipeServiceImpl.getExistRecipes(page, member));
     }
 
     @Operation(summary = "레시피북 상세정보 조회", description = "특정 레시피북 정보를 조회합니다.")
     @Parameter(name = "recipeId", description = "레시피북 Id, Path Variable 입니다.", required = true, example = "1", in = ParameterIn.PATH)
     @GetMapping("/{recipeId}")
-    public ApiResponse<RecipeResponse> getRecipe(@PathVariable Long recipeId) {
-        return ApiResponse.onSuccess(recipeServiceImpl.getRecipeDetail(recipeId));
+    public ApiResponse<RecipeResponse> getRecipe(@PathVariable Long recipeId,
+                                                 @MemberObject Member member) {
+        return ApiResponse.onSuccess(recipeServiceImpl.getRecipeDetail(recipeId, member));
     }
 
     @Operation(summary = "레시피북 등록", description = "레시피북을 등록합니다.")
@@ -93,8 +95,9 @@ public class RecipeController {
     @GetMapping("/search")
     public ApiResponse<RecipeResponse.RecipeResponseList> findRecipesByKeyword(
         @RequestParam(value = "page") Integer page,
-        @RequestParam(value = "keyword") String keyword) {
-        return ApiResponse.onSuccess(recipeServiceImpl.findRecipesByKeyword(page, keyword));
+        @RequestParam(value = "keyword") String keyword,
+        @MemberObject Member member) {
+        return ApiResponse.onSuccess(recipeServiceImpl.findRecipesByKeyword(page, keyword, member));
     }
 
     @Operation(summary = "메인 레시피북 조회", description = "메인에 띄울 레시피북을 조회합니다.")

@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface RecipeService {
 
-    RecipeResponse.RecipeResponseList getExistRecipes(int page);
+    RecipeResponse.RecipeResponseList getExistRecipes(int page, Member member);
 
-    RecipeResponse getRecipeDetail(Long id);
+    RecipeResponse getRecipeDetail(Long id, Member member);
 
     RecipeResponse createRecipe(RecipeRequest recipeRequest, Member member);
 
@@ -30,5 +30,8 @@ public interface RecipeService {
 
     RecipeResponse.RecipeMyPageList getRecipeLikeList(Member member, Integer Page);
 
-    RecipeResponse.RecipeResponseList findRecipesByKeyword(Integer page, String keyword);
+    RecipeResponse.RecipeResponseList findRecipesByKeyword(Integer page, String keyword, Member member);
+
+    RecipeResponse getRecipeDetailResponse(Recipe recipes, Member member);
+
 }

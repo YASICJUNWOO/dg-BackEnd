@@ -1,13 +1,13 @@
 package com.example.dgbackend.domain.recipe.service;
 
 import com.example.dgbackend.domain.member.Member;
-import com.example.dgbackend.domain.member.service.MemberService;
 import com.example.dgbackend.domain.recipe.Recipe;
 import com.example.dgbackend.domain.recipe.dto.RecipeRequest;
 import com.example.dgbackend.domain.recipe.dto.RecipeResponse;
 import com.example.dgbackend.domain.recipe.repository.RecipeRepository;
 import com.example.dgbackend.domain.recipe_hashtag.RecipeHashTag;
 import com.example.dgbackend.domain.recipe_hashtag.service.RecipeHashTagService;
+import com.example.dgbackend.domain.recipelike.service.RecipeLikeService;
 import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
 import com.example.dgbackend.global.exception.ApiException;
 import jakarta.transaction.Transactional;
@@ -29,27 +29,41 @@ import static com.example.dgbackend.domain.recipe.dto.RecipeResponse.toRecipeMyP
 public class RecipeServiceImpl implements RecipeService {
 
     private final RecipeRepository recipeRepository;
-    private final MemberService memberService;
     private final RecipeHashTagService recipeHashTagService;
+    private final RecipeLikeService recipeLikeService;
 
     @Override
-    public RecipeResponse.RecipeResponseList getExistRecipes(int page) {
+    public RecipeResponse.RecipeResponseList getExistRecipes(int page, Member member) {
         Pageable pageable = Pageable.ofSize(10).withPage(page);
 
-        return RecipeResponse.toRecipeResponseList(recipeRepository.findAllByState(true, pageable));
+        Page<Recipe> allByState = recipeRepository.findAllByState(true, pageable);
+
+        List<RecipeResponse> recipeResponseList = allByState.getContent().stream()
+                .map(recipe -> {
+                    return getRecipeDetailResponse(recipe, member);
+                }).toList();
+
+        return RecipeResponse.toRecipeResponseList(allByState, recipeResponseList);
     }
 
     @Override
-    public RecipeResponse getRecipeDetail(Long id) {
+    public RecipeResponse getRecipeDetail(Long id, Member member) {
         Recipe recipe = getRecipe(id);
-        return RecipeResponse.toResponse(recipe);
+        return getRecipeDetailResponse(recipe, member);
+    }
+
+    //like 상태를 추가 (좋아요 누른 상태인지 확인)
+    @Override
+    public RecipeResponse getRecipeDetailResponse(Recipe recipes, Member member) {
+
+        boolean state = recipeLikeService.getRecipeLike(recipes.getId(), member).isState();
+
+        return RecipeResponse.toResponse(recipes, state);
     }
 
     @Override
     @Transactional
-    public RecipeResponse createRecipe(RecipeRequest recipeRequest, Member member) {
-
-        Member memberEntity = memberService.findMemberByName(member.getName());
+    public RecipeResponse createRecipe(RecipeRequest recipeRequest, Member memberEntity) {
 
         isAlreadyCreate(recipeRequest.getTitle(), memberEntity.getName());
 
@@ -62,7 +76,7 @@ public class RecipeServiceImpl implements RecipeService {
         //레시피에 해시태그 저장
         save.setHashTagList(hashTags);
 
-        return RecipeResponse.toResponse(save);
+        return getRecipeDetailResponse(save, memberEntity);
     }
 
     @Override
@@ -73,7 +87,7 @@ public class RecipeServiceImpl implements RecipeService {
         //해시태그 저장
         List<RecipeHashTag> hashTags = recipeHashTagService.uploadRecipeHashTag(recipe, recipeRequest.getHashTagNameList());
         recipe.setHashTagList(hashTags);
-        return RecipeResponse.toResponse(recipe.update(recipeRequest));
+        return getRecipeDetailResponse(recipe.update(recipeRequest), recipe.getMember());
     }
 
     @Override
@@ -116,12 +130,18 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public RecipeResponse.RecipeResponseList findRecipesByKeyword(Integer page, String keyword) {
+    public RecipeResponse.RecipeResponseList findRecipesByKeyword(Integer page, String keyword, Member member) {
 
         Pageable pageable = Pageable.ofSize(10).withPage(page);
 
-        return RecipeResponse.toRecipeResponseList(recipeRepository.findRecipesByTitleContaining(keyword, pageable));
+        Page<Recipe> recipesByKeyword = recipeRepository.findRecipesByTitleContaining(keyword, pageable);
 
+        List<RecipeResponse> recipeResponseList = recipesByKeyword.getContent().stream()
+                .map(recipe -> {
+                    return getRecipeDetailResponse(recipe, member);
+                }).toList();
+
+        return RecipeResponse.toRecipeResponseList(recipesByKeyword, recipeResponseList);
     }
 
     @Override
