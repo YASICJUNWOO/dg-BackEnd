@@ -7,7 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Page;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -26,12 +28,50 @@ public class RecipeCommentResponse {
     @Schema(description = "댓글 내용", example = "맛있어요")
     private String content;
 
-    @Schema(description = "작성자", example = "김동규")
-    private String MemberName;
+    @Schema(description = "작성자 닉니임 ", example = "mason")
+    private String memberNickName;
+
+    @Schema(description = "작성자 이미지", example = "https://image.com")
+    private String memberImage;
+
+    @Schema(description = "작성일", example = "2021-08-01 12:00:00")
+    private LocalDateTime createdDate;
+
+    @Schema(description = "수정일", example = "2021-08-01 12:00:00")
+    private LocalDateTime updatedDate;
 
     @Builder.Default
     @Schema(description = "자식 댓글 목록", example = "[]")
     private List<RecipeCommentResponse> childCommentList = new ArrayList<>();
+
+    @Schema(description = "자식 댓글 수", example = "5")
+    private int childCommentCount = 0;
+
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    @Getter
+    public static class RecipeCommentResponseList {
+
+        private List<RecipeCommentResponse> commentList;
+        Integer listSize;
+        Integer totalPage;
+        Long totalElements;
+        Boolean isFirst;
+        Boolean isLast;
+    }
+
+    public static RecipeCommentResponseList toResponseList(Page<RecipeComment> recipeCommentList) {
+        return RecipeCommentResponseList.builder()
+                .commentList(recipeCommentList.stream().map(RecipeCommentResponse::toResponse).toList())
+                .listSize(recipeCommentList.getNumberOfElements())
+                .totalPage(recipeCommentList.getTotalPages())
+                .totalElements(recipeCommentList.getTotalElements())
+                .isFirst(recipeCommentList.isFirst())
+                .isLast(recipeCommentList.isLast())
+                .build();
+    }
+
 
     public static RecipeCommentResponse toResponse(RecipeComment recipeComment) {
 
@@ -40,11 +80,19 @@ public class RecipeCommentResponse {
                 .map(RecipeComment::getId)
                 .orElse(0L);
 
+        int childCommentCount = Optional.ofNullable(recipeComment.getChildCommentList())
+                .orElse(new ArrayList<>())
+                .size();
+
         return RecipeCommentResponse.builder()
                 .id(recipeComment.getId())
                 .content(recipeComment.getContent())
                 .childCommentList(getList(recipeComment))
-                .MemberName(recipeComment.getMember().getName())
+                .memberNickName(recipeComment.getMember().getNickName())
+                .memberImage(recipeComment.getMember().getProfileImageUrl())
+                .createdDate(recipeComment.getCreatedAt())
+                .updatedDate(recipeComment.getUpdatedAt())
+                .childCommentCount(childCommentCount)
                 .build();
     }
 
