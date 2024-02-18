@@ -3,7 +3,7 @@ package com.example.dgbackend.domain.recipecomment.service;
 import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.member.service.MemberService;
 import com.example.dgbackend.domain.recipe.Recipe;
-import com.example.dgbackend.domain.recipe.service.RecipeService;
+import com.example.dgbackend.domain.recipe.repository.RecipeRepository;
 import com.example.dgbackend.domain.recipecomment.RecipeComment;
 import com.example.dgbackend.domain.recipecomment.dto.RecipeCommentRequest;
 import com.example.dgbackend.domain.recipecomment.dto.RecipeCommentResponse;
@@ -17,7 +17,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,12 +25,12 @@ public class RecipeCommentServiceImpl implements RecipeCommentService {
 
     private final RecipeCommentRepository recipeCommentRepository;
     private final MemberService memberService;
-    private final RecipeService recipeService;
+    private final RecipeRepository recipeRepository;
 
     @Override
     public RecipeCommentResponse.RecipeCommentResponseList getRecipeComment(Long recipeId, int page) {
 
-        Recipe recipe = recipeService.getRecipe(recipeId);
+        Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(() -> new ApiException(ErrorStatus._EMPTY_RECIPE));
 
         Pageable pageable = Pageable.ofSize(10).withPage(page);
 
@@ -53,7 +52,7 @@ public class RecipeCommentServiceImpl implements RecipeCommentService {
     @Override
     public RecipeComment getEntity(RecipeCommentVO paramVO) {
         Member member = memberService.findMemberByName(paramVO.getMemberName());
-        Recipe recipe = recipeService.getRecipe(paramVO.getRecipeId());
+        Recipe recipe = recipeRepository.findById(paramVO.getRecipeId()).orElseThrow(() -> new ApiException(ErrorStatus._EMPTY_RECIPE));
         String content = paramVO.getContent();
 
         return Optional.ofNullable(paramVO.getParentId())
