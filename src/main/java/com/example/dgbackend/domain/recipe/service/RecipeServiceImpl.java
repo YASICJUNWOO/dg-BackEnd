@@ -50,6 +50,7 @@ public class RecipeServiceImpl implements RecipeService {
     public RecipeResponse createRecipe(RecipeRequest recipeRequest, Member member) {
 
         Member memberEntity = memberService.findMemberByName(member.getName());
+
         isAlreadyCreate(recipeRequest.getTitle(), memberEntity.getName());
 
         //레시피 저장
@@ -105,6 +106,7 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     public void isAlreadyCreate(String RecipeName, String memberName) {
+
         recipeRepository.findAllByTitleAndMember_Name(RecipeName, memberName).stream()
                 .filter(Recipe::isState)
                 .findFirst()
@@ -119,6 +121,7 @@ public class RecipeServiceImpl implements RecipeService {
         Pageable pageable = Pageable.ofSize(10).withPage(page);
 
         return RecipeResponse.toRecipeResponseList(recipeRepository.findRecipesByTitleContaining(keyword, pageable));
+
     }
 
     @Override
