@@ -178,7 +178,9 @@ public class CombinationController {
     @Operation(summary = "메인 주간 베스트 조합 조회", description = "메인페이지 상단에 띄울 랜덤 주간 베스트 조합 목록을 조회합니다.")
     @GetMapping("/main/weekly-best")
     public ApiResponse<CombinationResponse.CombinationMainList> getRandomMain() {
-        return ApiResponse.onSuccess(combinationScheduler.getMainRandomCombinationList());
+
+        return ApiResponse.onSuccess(
+                combinationScheduler.getMainRandomCombinationList());
     }
 
     @Operation(summary = "메인 오늘의 조합 로테이션 조회", description = "메인에 표시될 오늘의 조합 랜덤 3개를 조회합니다.")
@@ -189,6 +191,5 @@ public class CombinationController {
             combinationScheduler.getMainTodayCombinationList();
 
         return ApiResponse.onSuccess(combinationMainPreviewList);
-
     }
 }

@@ -6,7 +6,6 @@ import static com.example.dgbackend.domain.combination.dto.CombinationResponse.C
 import static com.example.dgbackend.domain.combination.dto.CombinationResponse.CombinationPreviewResultList;
 import static com.example.dgbackend.domain.combination.dto.CombinationResponse.CombinationMainList;
 
-
 import com.example.dgbackend.domain.combination.Combination;
 import com.example.dgbackend.domain.member.Member;
 

@@ -102,6 +102,5 @@ public class RecipeController {
     public ApiResponse<RecipeResponse.RecipeMainList> getMainRecipeList() {
         return ApiResponse.onSuccess(recipeScheduler.getMainTodayRecipeList());
     }
-
 }
 
