@@ -147,6 +147,7 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
     @Override
     public CombinationResponse.CombinationMyPageList getCombinationMyPageList(Member member,
         Integer page) {
+
         Page<Combination> combinations = combinationRepository.findAllByMemberIdAndStateIsTrueOrderByCreatedAtDesc(
             member.getId(), PageRequest.of(page, 21));
 
